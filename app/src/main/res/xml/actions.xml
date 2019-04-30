@@ -33,7 +33,9 @@
 
     <action intentName="actions.intent.GET_EXERCISE_OBSERVATION">
 
-        <fulfillment urlTemplate="https://fit-actions.firebaseapp.com/stats{?exerciseType}">
+        <fulfillment
+            fulfillmentMode="actions.fulfillment.SLICE"
+            urlTemplate="https://fit-actions.firebaseapp.com/stats{?exerciseType}">
 
             <parameter-mapping
                 intentParameter="exerciseObservation.aboutExercise.name"
