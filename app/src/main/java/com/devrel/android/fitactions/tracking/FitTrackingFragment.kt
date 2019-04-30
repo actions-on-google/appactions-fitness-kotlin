@@ -141,7 +141,7 @@ class FitTrackingFragment : Fragment() {
             ?: FitActivity.Type.UNKNOWN
         startActivityTitle.text = getString(R.string.start_activity_title, type.name.toLowerCase())
         startActivityCountDown.text = TimeUnit.MILLISECONDS.toSeconds(countDownMs).toString()
-        startActivityButton.setImageResource(R.drawable.ic_start)
+        startActivityButton.isSelected = false
     }
 
     /**
@@ -153,7 +153,7 @@ class FitTrackingFragment : Fragment() {
             R.string.stats_tracking_distance,
             activity.distanceMeters.toInt()
         )
-        startActivityButton.setImageResource(R.drawable.ic_cancel)
+        startActivityButton.isSelected = true
     }
 
     interface FitTrackingActions {
