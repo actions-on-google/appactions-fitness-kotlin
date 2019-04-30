@@ -17,8 +17,16 @@
 
 <actions>
 
+    <!-- This file describes the supported actions by this app -->
+
     <action intentName="actions.intent.START_EXERCISE">
+
+        <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
+        <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
+
         <fulfillment urlTemplate="https://fit-actions.firebaseapp.com/start{?exerciseType}">
+
+            <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
 
             <parameter-mapping
                 intentParameter="exerciseActivity.name"
@@ -32,6 +40,9 @@
     </action>
 
     <action intentName="actions.intent.GET_EXERCISE_OBSERVATION">
+
+        <!-- You can define the fulfillment mode, it can be SLICE or DEEPLINK -->
+        <!-- When slice is used, make sure you are supporting slices in your app -->
 
         <fulfillment
             fulfillmentMode="actions.fulfillment.SLICE"

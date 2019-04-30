@@ -19,6 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.devrel.android.fitactions">
 
+    <!-- Needed permission to start the FitTrackingService in foreground mode -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -43,12 +44,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Required to support search action intents from Google Search -->
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <!-- Define your supported deeplinks -->
             <intent-filter
                 android:autoVerify="true"
                 tools:targetApi="m">
@@ -68,17 +71,21 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- Define your SliceProvider, remember that authorities must be unique between different apps -->
         <provider
             android:name=".slices.FitSliceProvider"
             android:authorities="${applicationId}.FitSliceProvider"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.app.slice.category.SLICE" />
             </intent-filter>
+
         </provider>
 
+        <!-- Add an indication where to find the actions.xml -->
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
