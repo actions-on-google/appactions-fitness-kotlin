@@ -72,6 +72,7 @@
             android:exported="true" />
 
         <!-- Define your SliceProvider, remember that authorities must be unique between different apps -->
+        <!-- And this authority is used as urlTemplate for app actions with Slices -->
         <provider
             android:name=".slices.FitSliceProvider"
             android:authorities="${applicationId}.FitSliceProvider"
