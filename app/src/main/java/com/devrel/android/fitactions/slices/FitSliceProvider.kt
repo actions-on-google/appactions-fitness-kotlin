@@ -20,6 +20,7 @@ package com.devrel.android.fitactions.slices
 import android.net.Uri
 import androidx.slice.Slice
 import androidx.slice.SliceProvider
+import com.devrel.android.fitactions.BuildConfig
 import com.devrel.android.fitactions.DeepLink
 import com.devrel.android.fitactions.model.FitRepository
 
@@ -31,6 +32,13 @@ import com.devrel.android.fitactions.model.FitRepository
  * This SliceProvider is defined inside the AndroidManifest.
  */
 class FitSliceProvider : SliceProvider() {
+
+    companion object {
+        /**
+         * The Slice authority as defined in the AndroidManifest
+         */
+        internal const val SLICE_AUTHORITY = "${BuildConfig.APPLICATION_ID}.FitSliceProvider"
+    }
 
     /**
      * Keep track of the last created slice so when the slice calls "refresh"
@@ -52,10 +60,11 @@ class FitSliceProvider : SliceProvider() {
         return checkNotNull(lastSlice).getSlice()
     }
 
-    override fun onCreateSliceProvider(): Boolean {
-        // TODO grant permissions to assistant package.
-        return true
-    }
+    /**
+     * This method is called when the Provider is first created, use it to initialize your code but keep it mind
+     * that you should not do heavy tasks and block the thread.
+     */
+    override fun onCreateSliceProvider(): Boolean = true
 
     /**
      * Given the sliceUri create a matching FitSlice instance.
