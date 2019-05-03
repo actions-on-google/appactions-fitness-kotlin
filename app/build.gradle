@@ -23,6 +23,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -56,6 +58,10 @@ dependencies {
     // Material components
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-appindexing:17.1.0'
+
     // Room DB
     def room_version = "2.1.0-alpha07"
     implementation "androidx.room:room-runtime:$room_version"
@@ -67,6 +73,6 @@ dependencies {
 
     // Test dependencies
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha05'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha05'
 }

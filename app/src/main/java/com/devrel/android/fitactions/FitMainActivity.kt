@@ -17,6 +17,7 @@
 
 package com.devrel.android.fitactions
 
+import android.app.SearchManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,23 +28,34 @@ import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
+import com.google.android.gms.actions.SearchIntents
 
 
+/**
+ * Main activity responsible for the app navigation and handling deep-links.
+ */
 class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
 
-        // Get the action and data from the intent to handle it
+        // Get the action and data from the intent to handle it.
         val action: String? = intent?.action
         val data: Uri? = intent?.data
         when (action) {
+            // When the action is triggered by a deep-link Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> handleDeepLink(data)
+            // When the action is triggered by the Google search action the ACTION_SEARCH will be used
+            SearchIntents.ACTION_SEARCH -> handleSearchIntent(intent.getStringExtra(SearchManager.QUERY))
+            // Otherwise start the app as you would normally do.
             else -> showDefaultView()
         }
     }
 
+    /**
+     * When a fragment is attached add the required callback methods.
+     */
     override fun onAttachFragment(fragment: Fragment) {
         when (fragment) {
             is FitStatsFragment -> fragment.actionsCallback = this
@@ -51,6 +63,9 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         }
     }
 
+    /**
+     * Callback method from the FitStatsFragment to indicate that the tracking activity flow should be shown.
+     */
     override fun onStartActivity() {
         updateView(
             newFragmentClass = FitTrackingFragment::class.java,
@@ -59,8 +74,11 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         )
     }
 
+    /**
+     * Callback method when an activity stops.
+     * We could show a details screen, for now just go back to home screen.
+     */
     override fun onActivityStopped(activityId: String) {
-        // TODO show details
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
@@ -72,11 +90,14 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
      * Use the URI provided by the intent to handle the different deep-links
      */
     private fun handleDeepLink(data: Uri?) {
+        // path is normally used to indicate which view should be displayed
+        // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> "start" will be the path
         when (data?.path) {
             DeepLink.STATS -> {
                 updateView(FitStatsFragment::class.java)
             }
             DeepLink.START -> {
+                // Get the parameter defined as "exerciseType" and add it to the fragment arguments
                 val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
                 val type = FitActivity.Type.find(exerciseType)
                 val arguments = Bundle().apply { putSerializable(FitTrackingFragment.PARAM_TYPE, type) }
@@ -84,13 +105,27 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
                 updateView(FitTrackingFragment::class.java, arguments)
             }
             DeepLink.STOP -> {
+                // Stop the tracking service if any and return to home screen.
                 stopService(Intent(this, FitTrackingService::class.java))
                 updateView(FitStatsFragment::class.java)
             }
             else -> {
+                // path is not supported or invalid, start normal flow.
                 showDefaultView()
             }
         }
+    }
+
+    /**
+     * In the event where Google Assistant is confident that the user wishes to access your app via the Assistant,
+     * but is unable to resolve the query to a built-in intent, a search intent will be sent to the app.
+     *
+     * Handle the given query
+     */
+    private fun handleSearchIntent(searchQuery: String?) {
+        // The app does not have a search functionality, we could parse the search query, but the normal use case would
+        // would be to use the query in a search box. For this sample we just show the home screen
+        showDefaultView()
     }
 
     /**
