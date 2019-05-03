@@ -29,10 +29,11 @@
             <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
 
             <parameter-mapping
-                intentParameter="exerciseActivity.name"
+                intentParameter="exercise.name"
                 urlParameter="exerciseType" />
 
         </fulfillment>
+
     </action>
 
     <action intentName="actions.intent.STOP_EXERCISE">
@@ -49,10 +50,20 @@
             fulfillmentMode="actions.fulfillment.SLICE"
             urlTemplate="content://com.devrel.android.fitactions.FitSliceProvider/stats{?exerciseType}">
 
+            <!-- If a parameter is set as required, the action will only be fulfilled if the parameter is found -->
+            <!-- That's why a fallback urlTemplate needs to be provided for such case. -->
+
             <parameter-mapping
                 intentParameter="exerciseObservation.aboutExercise.name"
+                required="true"
                 urlParameter="exerciseType" />
 
         </fulfillment>
+
+        <!-- In case the exercise name is not found we fallback to the stats deep-link inside the app -->
+
+        <fulfillment
+            fulfillmentMode="actions.fulfillment.DEEPLINK"
+            urlTemplate="https://fit-actions.firebaseapp.com/stats" />
     </action>
 </actions>

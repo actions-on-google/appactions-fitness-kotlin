@@ -21,10 +21,11 @@
 
     <string name="slice_enter_app_hint">Enter App</string>
     <string name="slice_uri_not_found">URI not recognized.</string>
-    <string name="slice_stats_title">Your stats</string>
-    <string name="slice_stats_loading">Getting your stats</string>
+    <string name="slice_stats_title">Your last %1$s activities</string>
+    <string name="slice_stats_loading">Getting last %1$s activities…</string>
     <string name="slice_stats_distance">%1$s km</string>
     <string name="slice_stats_subtitle">Keep going!</string>
+    <string name="slice_stats_subtitle_no_data">No activity found yet. Start one now!</string>
 
     <string name="start_activity_title">Start %1$s in…</string>
 

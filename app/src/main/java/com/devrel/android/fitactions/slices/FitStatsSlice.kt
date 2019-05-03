@@ -19,10 +19,10 @@ package com.devrel.android.fitactions.slices
 
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
+import androidx.lifecycle.Observer
 import androidx.slice.Slice
 import androidx.slice.builders.*
+import com.devrel.android.fitactions.DeepLink
 import com.devrel.android.fitactions.R
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
@@ -40,21 +40,45 @@ class FitStatsSlice(
 ) : FitSlice(context, sliceUri) {
 
     /**
-     * Get the last activities and refresh the slice.
+     * Get the activity type from the uri and map it to our enum types.
      */
-    private val activitiesLiveData = fitRepo.getLastActivities(5).apply {
+    private val activityType = FitActivity.Type.find(
+        sliceUri.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
+    )
+
+    /**
+     * Observer that will refresh the slice once data is available
+     */
+    private val observer = Observer<List<FitActivity>> {
+        if (it != null) {
+            refresh()
+        }
+    }
+
+    /**
+     * Create and observe the last activities LiveData.
+     */
+    private val activitiesLiveData = fitRepo.getLastActivities(count = 5, type = activityType).apply {
         // The ContentProvider is called in a different thread and liveData
         // only works with MainThread
-        Handler(Looper.getMainLooper()).post {
-            observeForever {
-                refresh()
-            }
+        handler.post {
+            observeForever(observer)
         }
     }
 
     override fun getSlice(): Slice {
         // If the data is still loading, return a loading slice, otherwise create the stats slice.
-        return activitiesLiveData.value?.let { createStatsSlice(it) } ?: createLoadingSlice()
+        val data = activitiesLiveData.value
+        return if (data != null) {
+            // data is available, remove attached observer
+            handler.post {
+                activitiesLiveData.removeObserver(observer)
+            }
+
+            createStatsSlice(data)
+        } else {
+            createLoadingSlice()
+        }
     }
 
     /**
@@ -62,7 +86,10 @@ class FitStatsSlice(
      */
     private fun createLoadingSlice(): Slice = list(context, sliceUri, ListBuilder.INFINITY) {
         header {
-            setTitle(context.getString(R.string.slice_stats_loading), true)
+            setTitle(
+                context.getString(R.string.slice_stats_loading, activityType.name.toLowerCase()),
+                /* isLoading */ true
+            )
         }
     }
 
@@ -74,8 +101,12 @@ class FitStatsSlice(
         return list(context, sliceUri, ListBuilder.INFINITY) {
             // Add the header of the slice
             header {
-                title = context.getString(R.string.slice_stats_title)
-                subtitle = context.getString(R.string.slice_stats_subtitle)
+                title = context.getString(R.string.slice_stats_title, activityType.name.toLowerCase())
+                subtitle = if (data.isEmpty()) {
+                    context.getString(R.string.slice_stats_subtitle_no_data)
+                } else {
+                    context.getString(R.string.slice_stats_subtitle)
+                }
                 // Defines the primary action when slice is clicked
                 primaryAction = createActivityAction()
             }

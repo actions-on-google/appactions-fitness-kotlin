@@ -72,8 +72,9 @@ class FitRepository(private val fitDb: FitDatabase, private val ioExecutor: Exec
      * @param count maximum number of activities to return
      * @return a live data with the last FitActivity
      */
-    fun getLastActivities(count: Int): LiveData<List<FitActivity>> {
-        return fitDb.fitActivityDao().getAll(count)
+    fun getLastActivities(count: Int, type: FitActivity.Type? = null): LiveData<List<FitActivity>> {
+        val dao = fitDb.fitActivityDao()
+        return type?.run { dao.getAllOfType(this, count) } ?: dao.getAll(count)
     }
 
     /**

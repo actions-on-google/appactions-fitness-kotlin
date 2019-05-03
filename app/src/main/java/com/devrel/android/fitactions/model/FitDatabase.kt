@@ -98,6 +98,13 @@ interface FitActivityDao {
     fun getAll(max: Int = -1): LiveData<List<FitActivity>>
 
     /**
+     * @param max define a max result count.
+     * @return a list of FitActivity items ordered by date
+     */
+    @Query("SELECT * FROM fit_activities WHERE type == :type ORDER BY date DESC LIMIT :max")
+    fun getAllOfType(type: FitActivity.Type, max: Int = -1): LiveData<List<FitActivity>>
+
+    /**
      * @return a FitStats of the user
      */
     @Query("SELECT COUNT(*) as totalCount, SUM(distanceMeters) as totalDistanceMeters, SUM(durationMs) as totalDurationMs FROM fit_activities")

@@ -21,6 +21,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import androidx.core.graphics.drawable.IconCompat
 import androidx.slice.Slice
 import androidx.slice.builders.ListBuilder
@@ -36,6 +38,11 @@ import com.devrel.android.fitactions.R
  * Every slice implementation should extend this class and implement getSlice method.
  */
 abstract class FitSlice(val context: Context, val sliceUri: Uri) {
+
+    /**
+     * Main thread handler to execute tasks that requires Android Main Thread
+     */
+    protected val handler = Handler(Looper.getMainLooper())
 
     /**
      * @return the specific slice implementation to be used by SliceProvider
