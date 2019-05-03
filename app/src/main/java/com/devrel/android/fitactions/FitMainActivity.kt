@@ -61,7 +61,11 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
 
     override fun onActivityStopped(activityId: String) {
         // TODO show details
-        supportFragmentManager.popBackStack()
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            updateView(FitStatsFragment::class.java)
+        }
     }
 
     /**
