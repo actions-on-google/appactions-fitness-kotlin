@@ -29,6 +29,8 @@ import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
 import com.google.android.gms.actions.SearchIntents
+import com.google.firebase.appindexing.Action
+import com.google.firebase.appindexing.FirebaseUserActions
 
 
 /**
@@ -92,6 +94,7 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     private fun handleDeepLink(data: Uri?) {
         // path is normally used to indicate which view should be displayed
         // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> "start" will be the path
+        var actionHandled = true
         when (data?.path) {
             DeepLink.STATS -> {
                 updateView(FitStatsFragment::class.java)
@@ -112,8 +115,13 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
             else -> {
                 // path is not supported or invalid, start normal flow.
                 showDefaultView()
+
+                // Unknown or invalid action
+                actionHandled = false
             }
         }
+
+        notifyActionSuccess(actionHandled)
     }
 
     /**
@@ -126,6 +134,26 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         // The app does not have a search functionality, we could parse the search query, but the normal use case would
         // would be to use the query in a search box. For this sample we just show the home screen
         showDefaultView()
+    }
+
+    /**
+     * Log a success or failure of the received action based on if your app could handle the action
+     *
+     * Required to help giving Assistant visibility over success or failure of an action sent to the app.
+     * Otherwise, it can’t confidently send user’s to your app for fulfillment.
+     */
+    private fun notifyActionSuccess(succeed: Boolean) {
+        intent.getStringExtra(DeepLink.Actions.ACTION_TOKEN_EXTRA)?.let { actionToken ->
+            val actionStatus = if (succeed) {
+                Action.Builder.STATUS_TYPE_COMPLETED
+            } else {
+                Action.Builder.STATUS_TYPE_FAILED
+            }
+            val action = Action.Builder(actionToken).setActionStatus(actionStatus).build()
+
+            // Send the end action to the Firebase app indexing.
+            FirebaseUserActions.getInstance().end(action)
+        }
     }
 
     /**

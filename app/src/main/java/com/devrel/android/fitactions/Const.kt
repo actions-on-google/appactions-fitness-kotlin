@@ -31,4 +31,8 @@ object DeepLink {
     object Params {
         const val ACTIVITY_TYPE = "exerciseType"
     }
+
+    object Actions {
+        const val ACTION_TOKEN_EXTRA = "actions.fulfillment.extra.ACTION_TOKEN"
+    }
 }
