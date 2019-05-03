@@ -41,23 +41,18 @@ class FitSliceProvider : SliceProvider() {
     }
 
     /**
-     * Keep track of the last created slice so when the slice calls "refresh"
-     * we don't create it again.
+     * Keep track of the created slices so when the slice calls "refresh" we don't create it again.
      */
-    private var lastSlice: FitSlice? = null
+    private val lastSlices = mutableMapOf<Uri, FitSlice>()
 
     override fun onBindSlice(sliceUri: Uri): Slice {
         // When a new request is send to the SliceProvider of this app, this method is called
         // with the given slice URI.
         // Here you could directly handle the uri and create a new slice. But in order to make
         // the slice dynamic and better structured, we use the FitSlice class.
-        // Then we check if the new slice uri is the same as the current created slice (if any).
-        // If there was none or the uri changed, we create a new instance of FitSlice and return
-        // the Slice instance.
-        if (lastSlice?.sliceUri != sliceUri) {
-            lastSlice = createNewSlice(sliceUri)
-        }
-        return checkNotNull(lastSlice).getSlice()
+        // Then we check if the new slice uri is the same as the last created slices (if any).
+        // If there was none, we create a new instance of FitSlice and return the Slice instance.
+        return lastSlices.getOrPut(sliceUri) { createNewSlice(sliceUri) }.getSlice()
     }
 
     /**
