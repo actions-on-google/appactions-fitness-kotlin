@@ -33,6 +33,7 @@ import com.devrel.android.fitactions.tracking.FitTrackingService
 import com.google.android.gms.actions.SearchIntents
 import com.google.firebase.appindexing.Action
 import com.google.firebase.appindexing.FirebaseUserActions
+import com.google.firebase.appindexing.builders.AssistActionBuilder
 import org.json.JSONObject
 
 /**
@@ -174,7 +175,10 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
             } else {
                 Action.Builder.STATUS_TYPE_FAILED
             }
-            val action = Action.Builder(actionToken).setActionStatus(actionStatus).build()
+            val action = AssistActionBuilder()
+                .setActionToken(actionToken)
+                .setActionStatus(actionStatus)
+                .build()
 
             // Send the end action to the Firebase app indexing.
             FirebaseUserActions.getInstance().end(action)
