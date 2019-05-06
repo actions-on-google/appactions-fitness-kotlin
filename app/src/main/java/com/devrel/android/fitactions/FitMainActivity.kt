@@ -18,8 +18,10 @@
 package com.devrel.android.fitactions
 
 import android.app.SearchManager
+import android.app.assist.AssistContent
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -31,7 +33,7 @@ import com.devrel.android.fitactions.tracking.FitTrackingService
 import com.google.android.gms.actions.SearchIntents
 import com.google.firebase.appindexing.Action
 import com.google.firebase.appindexing.FirebaseUserActions
-
+import org.json.JSONObject
 
 /**
  * Main activity responsible for the app navigation and handling deep-links.
@@ -46,9 +48,9 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         val action: String? = intent?.action
         val data: Uri? = intent?.data
         when (action) {
-            // When the action is triggered by a deep-link Intent.Action_VIEW will be used
+            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> handleDeepLink(data)
-            // When the action is triggered by the Google search action the ACTION_SEARCH will be used
+            // When the action is triggered by the Google search action, the ACTION_SEARCH will be used
             SearchIntents.ACTION_SEARCH -> handleSearchIntent(intent.getStringExtra(SearchManager.QUERY))
             // Otherwise start the app as you would normally do.
             else -> showDefaultView()
@@ -62,6 +64,29 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         when (fragment) {
             is FitStatsFragment -> fragment.actionsCallback = this
             is FitTrackingFragment -> fragment.actionsCallback = this
+        }
+    }
+
+    /**
+     * When the user invokes an App Action while in your app, users will see a suggestion
+     * to share their foreground content.
+     *
+     * By implementing onProvideAssistContent(), you provide the Assistant with structured information
+     * about the current foreground content.
+     *
+     * This contextual information enables the Assistant to continue being helpful after the user enters your app.
+     */
+    override fun onProvideAssistContent(outContent: AssistContent) {
+        super.onProvideAssistContent(outContent)
+
+        // JSON-LD object based on Schema.org structured data
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // This is just an example, more accurate information should be provided
+            outContent.structuredData = JSONObject()
+                .put("@type", "ExerciseObservation")
+                .put("name", "My last runs")
+                .put("url", "https://fit-actions.firebaseapp.com/stats")
+                .toString()
         }
     }
 
