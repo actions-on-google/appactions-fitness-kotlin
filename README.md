@@ -12,6 +12,8 @@ Specifically, this sample supports the following BIIs:
 * `GET_EXERCISE_OBSERVATION` - displays a [Slice](https://developer.android.com/guide/slices) inside
 the Assistant with information on a particular exercise statistic
 
+![alt-text](media/fit-actions-demo.gif "App Actions Demo")
+
 ## App Actions overview
 
 With [App Actions](https://developers.google.com/actions/app/ ), your app can be triggered by users
@@ -28,15 +30,6 @@ You map the BIIs that are relevant to your app and their parameters to your Andr
 within a file named `actions.xml`. For more details, check out our developer documentation for App
 Actions.
 
-## Sample requirements
-
-* [API Level 21 - Android 5.0 Lollipop](https://developer.android.com/about/versions/android-5.0)
-* [Android JetPack support](https://developer.android.com/jetpack/)
-* [Google Assistant](https://assistant.google.com/) available on the test / target device or a
-emulator configured with Google Play. Check the
-[Run apps on the emulator](https://developer.android.com/studio/run/emulator) guide for details.
-* App Actions Test Tool Android Studio plugin. The installation instructions are listed below.
-
 ## Importing this sample
 
 Check out or download the project to your preferred location. You can import the project using the
@@ -47,14 +40,53 @@ Android Studio with the following steps:
 3. Select the `build.gradle` file
 4. Follow the instructions presented by the IDE.
 
-## How to test
+## Requirements
 
-To develop and test your App Actions, you will need to install the App Actions plugin. The plugin
-will parse your `actions.xml` and fils in default values for the relevant BII parameters. You can
-modify these parameter values to test that your App Actions provide the correct result.
+Since the App Actions feature is in developer preview mode, to run the sample or use 
+App Actions in any other app, it requires a few extra steps. 
 
-*Attention*: To test the Assistant integration, make sure that you've logged in to the test device
-and to the Android Studio with the same Google account.
+The `actions.xml` file that defines the supported actions for your app (or in this case the sample), 
+needs to be uploaded into the Assistant. This is done via the App Actions Test Tool Android Studio
+plugin (the installation instructions are listed below).
+
+For security and verification reasons, when uploading the `actions.xml` file with the plugin, the
+account used, must have ownership of the package name of the application. 
+
+Login in Android Studio with your account and use one of your published applications package name 
+in Google Play Console. If you don't have any, you can upload one in draft mode 
+(it does not have to be published). 
+
+Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device 
+with the same account used in Android Studio.
+
+Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the 
+actions received. Re-use or create an app in Firebase following these steps (TODO add link) and make
+sure the `google-service.json` is available in the app module.
+
+Note: an alternative, if you only want to test the sample, you could remove the Google Services plugin 
+and the Firebase user action tracking by:
+
+Remove or comment `apply plugin: 'com.google.gms.google-services'` (`app/build.gradle`)
+
+Remove or comment `FirebaseUserActions.getInstance().end(action)` (`FitMainActivity.kt`)
+
+## How to run
+
+Once the requirements above are satisfied, you are ready to run the sample.
+
+1. Run the code and install the sample in the device (Run `app`)
+2. Open the App Actions plugin (Tools -> App Actions Test Tool)
+3. Define an invocation name that will be used to trigger the actions (i.e My Fit App)
+4. Press 'Create Preview'. If the setup was successful, you will see a panel like this
+
+![app-actions-plugin](media/app-actions-plugin.png "App Actions Plugin")
+
+5. Select the action and click run.
+
+The Assistant should show up and run the selected action.
+
+Once you run this once, you can then try using voice or written commands directly in the 
+Assistant.
 
 ### Installing the App Actions plugin
 
@@ -64,17 +96,36 @@ and to the Android Studio with the same Google account.
 3. Search for "**App Actions Test Tool**"
 4. **Install** and restart your IDE
 
-### Running the sample
+## Troubleshooting
 
-Using a compatible device or the emulator, click on '**Run app (Shift+F10)**', and selected the 
-device you want to test. After the APK installation, you will be able to test using one of these
-approaches:
+Make sure that you follow these steps:
 
-* Start the Assistant and try saying: “Start my run using Fitness Action Sample”
-* Open the App Actions Test Tool, select the desired BII, and click **Send**.
+* Own a Google account
+* Application published in Google Play console (at least as draft)
+* Google Account has access to the application in Google Play Console
+* Logged in Android Studio with the Google Account
+* Logged in with the same account in the testing device
+* Actions.xml file is defined in the Application project
+* Upload preview using App Actions plugin
+* App is available in the device.
+
+If the plugin is not able to load the preview of the action, make sure that:
+ 
+* The account used in Android Studio is the same as the one in the device
+* The account used must own or have access in Play console to the applicationId defined
+in `build.gradle`
+* Android Studio has access to an internet connection.
+* If you modified the `actions.xml`, make sure the right syntax is used.
+
+If the action is not running in the device or Assistant is not reacting, make sure that:
+
+* The plugin loaded the actions preview at least one time.
+* The account in the device is the same as the one in Android Studio.
+* The device has access to an internet connection.
+* You are using the latest version of the Assistant or Google app. 
 
 ## License
-
+```
 Copyright 2019 Google LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -88,3 +139,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
