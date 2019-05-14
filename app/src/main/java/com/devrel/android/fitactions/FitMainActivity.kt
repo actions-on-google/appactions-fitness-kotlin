@@ -36,6 +36,9 @@ import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.builders.AssistActionBuilder
 import org.json.JSONObject
 
+// Keep R package so setupPackageName tasks can replace it.
+import com.devrel.android.fitactions.R as sR
+
 /**
  * Main activity responsible for the app navigation and handling deep-links.
  */
@@ -43,7 +46,7 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fit_activity)
+        setContentView(sR.layout.fit_activity)
 
         // Get the action and data from the intent to handle it.
         val action: String? = intent?.action
@@ -217,7 +220,7 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         fragment.arguments = arguments
 
         supportFragmentManager.beginTransaction().run {
-            replace(R.id.fitActivityContainer, fragment)
+            replace(sR.id.fitActivityContainer, fragment)
             if (toBackStack) {
                 addToBackStack(null)
             }

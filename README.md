@@ -64,11 +64,20 @@ actions received. Re-use or create an app in Firebase following these steps (TOD
 sure the `google-service.json` is available in the app module.
 
 Note: an alternative, if you only want to test the sample, you could remove the Google Services plugin 
-and the Firebase user action tracking by:
+and the Firebase user action tracking.
 
-Remove or comment `apply plugin: 'com.google.gms.google-services'` (`app/build.gradle`)
+### Quick setup
 
-Remove or comment `FirebaseUserActions.getInstance().end(action)` (`FitMainActivity.kt`)
+To satisfy the package name requirements and the Firebase setup. You can run the
+following task with your package name. This tasks automatically will replace the package name
+in the required places.  
+
+```
+./gradlew :setupPackageName -PpackageName="com.your.package" -PdisableFirebase
+```
+
+The "disableFirebase" parameter is optional, if set it will remove the google service plugin and
+allow you to test the app without providing a google-service.json file.
 
 ## How to run
 
