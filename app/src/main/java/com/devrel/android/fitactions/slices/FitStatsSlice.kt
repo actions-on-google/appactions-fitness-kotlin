@@ -87,7 +87,7 @@ class FitStatsSlice(
     private fun createLoadingSlice(): Slice = list(context, sliceUri, ListBuilder.INFINITY) {
         header {
             setTitle(
-                context.getString(R.string.slice_stats_loading, activityType.name.toLowerCase()),
+                context.getString(R.string.slice_stats_loading, context.getString(activityType.nameId)),
                 /* isLoading */ true
             )
         }
@@ -101,7 +101,7 @@ class FitStatsSlice(
         return list(context, sliceUri, ListBuilder.INFINITY) {
             // Add the header of the slice
             header {
-                title = context.getString(R.string.slice_stats_title, activityType.name.toLowerCase())
+                title = context.getString(R.string.slice_stats_title, context.getString(activityType.nameId))
                 subtitle = if (data.isEmpty()) {
                     context.getString(R.string.slice_stats_subtitle_no_data)
                 } else {

@@ -21,6 +21,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.devrel.android.fitactions.R
 
 /**
  * Entity that describes an activity performed by the user.
@@ -42,11 +43,11 @@ data class FitActivity(
     /**
      * Defines the type of activity
      */
-    enum class Type {
-        UNKNOWN,
-        RUNNING,
-        WALKING,
-        CYCLING;
+    enum class Type(val nameId: Int) {
+        UNKNOWN(R.string.activity_unknown),
+        RUNNING(R.string.activity_running),
+        WALKING(R.string.activity_walking),
+        CYCLING(R.string.activity_cycling);
 
         companion object {
 
