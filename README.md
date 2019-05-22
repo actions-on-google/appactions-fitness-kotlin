@@ -73,7 +73,7 @@ following task with your package name. This tasks automatically will replace the
 in the required places.  
 
 ```
-./gradlew :setupPackageName -PpackageName="com.your.package" -PdisableFirebase
+./gradlew :setupPackageName -PpackageName="com.your.app" -PdisableFirebase
 ```
 
 The "disableFirebase" parameter is optional, if set it will remove the google service plugin and
