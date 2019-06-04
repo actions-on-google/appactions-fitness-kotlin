@@ -42,42 +42,39 @@ Android Studio with the following steps:
 
 ## Requirements
 
-Since the App Actions feature is in developer preview mode, to run the sample or use 
-App Actions in any other app, it requires a few extra steps. 
+Since the App Actions feature is in Developer Preview, to run the sample or use 
+App Actions in any other app, a few extra steps are required. 
 
 The `actions.xml` file that defines the supported actions for your app (or in this case the sample), 
 needs to be uploaded into the Assistant. This is done via the App Actions Test Tool Android Studio
 plugin (the installation instructions are listed below).
 
 For security and verification reasons, when uploading the `actions.xml` file with the plugin, the
-account used, must have ownership of the package name of the application. 
+account used, must have ownership of the application ID.
 
-Login in Android Studio with your account and use one of your published applications package name 
+Login in Android Studio with your account and use one of your published applications IDs 
 in Google Play Console. If you don't have any, you can upload one in draft mode 
 (it does not have to be published). 
+
+Change the `applicationId` in [app/build.gradle](https://github.com/actions-on-google/appactions-fitness-kotlin/blob/e83ed77b02fe056f767f2da5f0bbe5bd5b23f95c/app/build.gradle#L31)
+```groovy
+android {
+    defaultConfig {
+        applicationId "com.devrel.android.fitactions" // Use one of your published applications IDs
+    }
+}
+``` 
 
 Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device 
 with the same account used in Android Studio.
 
 Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the 
-actions received. Re-use or create an app in Firebase following these steps (TODO add link) and make
+actions received. Re-use or create an app in Firebase following 
+[these steps](https://firebase.google.com/docs/android/setup) and make
 sure the `google-service.json` is available in the app module.
 
-Note: an alternative, if you only want to test the sample, you could remove the Google Services plugin 
-and the Firebase user action tracking.
-
-### Quick setup
-
-To satisfy the package name requirements and the Firebase setup. You can run the
-following task with your package name. This tasks automatically will replace the package name
-in the required places.  
-
-```
-./gradlew :setupPackageName -PpackageName="com.your.app" -PdisableFirebase
-```
-
-The "disableFirebase" parameter is optional, if set it will remove the google service plugin and
-allow you to test the app without providing a google-service.json file.
+Note: as alternative, if you want to skip this step, you could disable Firebase by setting
+`firebaseEnabled` flag to false in [app/build.gradle](app/build.gradle)
 
 ## How to run
 
@@ -110,7 +107,7 @@ Assistant.
 Make sure that you follow these steps:
 
 * Own a Google account
-* Application published in Google Play console (at least as draft)
+* Application ID used is published in Google Play console (at least as draft)
 * Google Account has access to the application in Google Play Console
 * Logged in Android Studio with the Google Account
 * Logged in with the same account in the testing device
@@ -132,6 +129,15 @@ If the action is not running in the device or Assistant is not reacting, make su
 * The account in the device is the same as the one in Android Studio.
 * The device has access to an internet connection.
 * You are using the latest version of the Assistant or Google app. 
+
+App Actions is in Developer Preview, you can't upload an application to Google Play that
+defines actions in the `AndroidManifest.xml`. Remove the metadata tag to upload it
+
+```xml
+<meta-data
+    android:name="com.google.android.actions"
+    android:resource="@xml/actions" />
+```
 
 ## License
 ```
