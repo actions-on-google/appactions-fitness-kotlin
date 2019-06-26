@@ -52,19 +52,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <!-- Define your supported deeplinks -->
-            <intent-filter
-                android:autoVerify="true"
-                tools:targetApi="m">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="fit-actions.firebaseapp.com"
-                    android:scheme="https" />
-            </intent-filter>
         </activity>
 
         <service
@@ -72,25 +59,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <!-- Define your SliceProvider, remember that authorities must be unique between different apps -->
-        <!-- And this authority is used as urlTemplate for app actions with Slices -->
-        <provider
-            android:name="com.devrel.android.fitactions.slices.FitSliceProvider"
-            android:authorities="${applicationId}.FitSliceProvider"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.app.slice.category.SLICE" />
-            </intent-filter>
-
-        </provider>
-
-        <!-- Add an indication where to find the actions.xml -->
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/actions" />
     </application>
 
 </manifest>

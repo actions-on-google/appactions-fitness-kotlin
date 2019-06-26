@@ -32,7 +32,7 @@ if (firebaseEnabled) {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.devrel.android.fitactions"
+        applicationId "com.MYUNIQUENAME.android.fitactions"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -64,18 +64,11 @@ dependencies {
     // Material components
     implementation 'com.google.android.material:material:1.1.0-alpha06'
 
-    // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.firebase:firebase-appindexing:18.0.0'
-
     // Room DB
     def room_version = "2.1.0-rc01"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
-    // AppActions and Slices
-    implementation "androidx.slice:slice-builders-ktx:1.0.0-alpha6"
 
     // Test dependencies
     testImplementation 'junit:junit:4.12'
