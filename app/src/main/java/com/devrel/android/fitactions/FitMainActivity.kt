@@ -30,10 +30,6 @@ import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
-import com.google.android.gms.actions.SearchIntents
-import com.google.firebase.appindexing.Action
-import com.google.firebase.appindexing.FirebaseUserActions
-import com.google.firebase.appindexing.builders.AssistActionBuilder
 import org.json.JSONObject
 
 /**
@@ -49,8 +45,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         val action: String? = intent?.action
         val data: Uri? = intent?.data
         when (action) {
-            // When the action is triggered by the Google search action, the ACTION_SEARCH will be used
-            SearchIntents.ACTION_SEARCH -> handleSearchIntent(intent.getStringExtra(SearchManager.QUERY))
             // Otherwise start the app as you would normally do.
             else -> showDefaultView()
         }
@@ -122,34 +116,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         // The app does not have a search functionality, we could parse the search query, but the normal use case would
         // would be to use the query in a search box. For this sample we just show the home screen
         showDefaultView()
-    }
-
-    /**
-     * Log a success or failure of the received action based on if your app could handle the action
-     *
-     * Required to help giving Assistant visibility over success or failure of an action sent to the app.
-     * Otherwise, it can’t confidently send user’s to your app for fulfillment.
-     */
-    private fun notifyActionSuccess(succeed: Boolean) {
-        @Suppress("ConstantConditionIf")
-        if (!BuildConfig.FIREBASE_ENABLED) {
-            return
-        }
-
-        intent.getStringExtra(DeepLink.Actions.ACTION_TOKEN_EXTRA)?.let { actionToken ->
-            val actionStatus = if (succeed) {
-                Action.Builder.STATUS_TYPE_COMPLETED
-            } else {
-                Action.Builder.STATUS_TYPE_FAILED
-            }
-            val action = AssistActionBuilder()
-                .setActionToken(actionToken)
-                .setActionStatus(actionStatus)
-                .build()
-
-            // Send the end action to the Firebase app indexing.
-            FirebaseUserActions.getInstance().end(action)
-        }
     }
 
     /**

@@ -23,12 +23,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
-def firebaseEnabled = true
-
-if (firebaseEnabled) {
-    apply plugin: 'com.google.gms.google-services'
-}
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -38,8 +32,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField "boolean", "FIREBASE_ENABLED", "$firebaseEnabled"
     }
     buildTypes {
         release {
