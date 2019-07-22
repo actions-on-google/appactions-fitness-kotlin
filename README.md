@@ -9,8 +9,6 @@ vertical Assistant
 Specifically, this sample supports the following BIIs:
 * `START_EXERCISE` - opens the sample app and starts an exercise session
 * `STOP_EXERCISE` - opens the sample app and stops the current exercise session.
-* `GET_EXERCISE_OBSERVATION` - displays a [Slice](https://developer.android.com/guide/slices) inside
-the Assistant with information on a particular exercise statistic
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
 
@@ -60,21 +58,13 @@ Change the `applicationId` in [app/build.gradle](https://github.com/actions-on-g
 ```groovy
 android {
     defaultConfig {
-        applicationId "com.devrel.android.fitactions" // Use one of your published applications IDs
+        applicationId "com.MYUNIQUENAME.android.fitactions" // Use one of your published applications IDs
     }
 }
 ``` 
 
 Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device 
 with the same account used in Android Studio.
-
-Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the 
-actions received. Re-use or create an app in Firebase following 
-[these steps](https://firebase.google.com/docs/android/setup) and make
-sure the `google-service.json` is available in the app module.
-
-Note: as alternative, if you want to skip this step, you could disable Firebase by setting
-`firebaseEnabled` flag to false in [app/build.gradle](app/build.gradle)
 
 ## How to run
 

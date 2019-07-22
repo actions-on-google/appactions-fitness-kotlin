@@ -52,13 +52,30 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <!-- Define your supported deeplinks -->
+            <intent-filter
+                    android:autoVerify="true"
+                    tools:targetApi="m">
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                        android:host="fit-actions.firebaseapp.com"
+                        android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <service
             android:name="com.devrel.android.fitactions.tracking.FitTrackingService"
             android:enabled="true"
             android:exported="true" />
-
+        <!-- Indicate where to find the actions.xml -->
+        <meta-data
+                android:name="com.google.android.actions"
+                android:resource="@xml/actions" />
     </application>
 
 </manifest>
