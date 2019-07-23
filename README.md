@@ -1,5 +1,11 @@
 # App Actions Fitness Basic Sample
 
+## Codelab Start
+
+For detailed instructions on using this code, refer to the [Extend an Android app with App Actions](https://codelabs.developers.google.com/codelabs/appactions) codelab.
+
+## App Sample Overview
+
 This is a sample Fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](https://developers.google.com/actions/app/ ),
 we allow the user to call upon our application to fulfill supported actions from our Fitness
@@ -9,12 +15,10 @@ vertical Assistant
 Specifically, this sample supports the following BIIs:
 * `START_EXERCISE` - opens the sample app and starts an exercise session
 * `STOP_EXERCISE` - opens the sample app and stops the current exercise session.
-* `GET_EXERCISE_OBSERVATION` - displays a [Slice](https://developer.android.com/guide/slices) inside
-the Assistant with information on a particular exercise statistic
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
 
-## App Actions overview
+## App Actions Overview
 
 With [App Actions](https://developers.google.com/actions/app/ ), your app can be triggered by users
 through the Google Assistant on Android devices. To support App Actions, your app must implement
@@ -42,39 +46,31 @@ Android Studio with the following steps:
 
 ## Requirements
 
-Since the App Actions feature is in Developer Preview, to run the sample or use 
-App Actions in any other app, a few extra steps are required. 
+Since the App Actions feature is in Developer Preview, to run the sample or use
+App Actions in any other app, a few extra steps are required.
 
-The `actions.xml` file that defines the supported actions for your app (or in this case the sample), 
+The `actions.xml` file that defines the supported actions for your app (or in this case the sample),
 needs to be uploaded into the Assistant. This is done via the App Actions Test Tool Android Studio
 plugin (the installation instructions are listed below).
 
 For security and verification reasons, when uploading the `actions.xml` file with the plugin, the
 account used, must have ownership of the application ID.
 
-Login in Android Studio with your account and use one of your published applications IDs 
-in Google Play Console. If you don't have any, you can upload one in draft mode 
-(it does not have to be published). 
+Login in Android Studio with your account and use one of your published applications IDs
+in Google Play Console. If you don't have any, you can upload one in draft mode
+(it does not have to be published).
 
 Change the `applicationId` in [app/build.gradle](https://github.com/actions-on-google/appactions-fitness-kotlin/blob/e83ed77b02fe056f767f2da5f0bbe5bd5b23f95c/app/build.gradle#L31)
 ```groovy
 android {
     defaultConfig {
-        applicationId "com.devrel.android.fitactions" // Use one of your published applications IDs
+        applicationId "com.MYUNIQUENAME.android.fitactions" // Use one of your published applications IDs
     }
 }
-``` 
+```
 
-Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device 
+Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device
 with the same account used in Android Studio.
-
-Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the 
-actions received. Re-use or create an app in Firebase following 
-[these steps](https://firebase.google.com/docs/android/setup) and make
-sure the `google-service.json` is available in the app module.
-
-Note: as alternative, if you want to skip this step, you could disable Firebase by setting
-`firebaseEnabled` flag to false in [app/build.gradle](app/build.gradle)
 
 ## How to run
 
@@ -91,7 +87,7 @@ Once the requirements above are satisfied, you are ready to run the sample.
 
 The Assistant should show up and run the selected action.
 
-Once you run this once, you can then try using voice or written commands directly in the 
+Once you run this once, you can then try using voice or written commands directly in the
 Assistant.
 
 ### Installing the App Actions plugin
@@ -116,7 +112,7 @@ Make sure that you follow these steps:
 * App is available in the device.
 
 If the plugin is not able to load the preview of the action, make sure that:
- 
+
 * The account used in Android Studio is the same as the one in the device
 * The account used must own or have access in Play console to the applicationId defined
 in `build.gradle`
@@ -128,7 +124,7 @@ If the action is not running in the device or Assistant is not reacting, make su
 * The plugin loaded the actions preview at least one time.
 * The account in the device is the same as the one in Android Studio.
 * The device has access to an internet connection.
-* You are using the latest version of the Assistant or Google app. 
+* You are using the latest version of the Assistant or Google app.
 
 App Actions is in Developer Preview, you can't upload an application to Google Play that
 defines actions in the `AndroidManifest.xml`. Remove the metadata tag to upload it
