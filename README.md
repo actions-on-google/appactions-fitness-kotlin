@@ -1,5 +1,11 @@
 # App Actions Fitness Basic Sample - Codelab Complete
 
+## Codelab Complete
+
+For detailed instructions on using this code, refer to the [Extend an Android app with App Actions](https://codelabs.developers.google.com/codelabs/appactions) codelab.
+
+## App Sample Overview
+
 This is a sample Fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](https://developers.google.com/actions/app/ ),
 we allow the user to call upon our application to fulfill supported actions from our Fitness
@@ -12,7 +18,7 @@ Specifically, this sample supports the following BIIs:
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
 
-## App Actions overview
+## App Actions Overview
 
 With [App Actions](https://developers.google.com/actions/app/ ), your app can be triggered by users
 through the Google Assistant on Android devices. To support App Actions, your app must implement
