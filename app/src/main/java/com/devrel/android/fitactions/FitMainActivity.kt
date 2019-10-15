@@ -39,23 +39,26 @@ import org.json.JSONObject
 /**
  * Main activity responsible for the app navigation and handling deep-links.
  */
-class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
+class FitMainActivity :
+    AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
 
-        // Get the action and data from the intent to handle it.
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
-        when (action) {
-            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
-            Intent.ACTION_VIEW -> handleDeepLink(data)
-            // When the action is triggered by the Google search action, the ACTION_SEARCH will be used
-            SearchIntents.ACTION_SEARCH -> handleSearchIntent(intent.getStringExtra(SearchManager.QUERY))
-            // Otherwise start the app as you would normally do.
-            else -> showDefaultView()
-        }
+        // Handle the intent this activity was launched with.
+        intent?.handleIntent()
+    }
+
+    /**
+     * Handle new intents that are coming while the activity is on foreground since we set the
+     * launchMode to be singleTask, avoiding multiple instances of this activity to be created.
+     *
+     * See [launchMode](https://developer.android.com/guide/topics/manifest/activity-element#lmode)
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.handleIntent()
     }
 
     /**
@@ -72,10 +75,11 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
      * When the user invokes an App Action while in your app, users will see a suggestion
      * to share their foreground content.
      *
-     * By implementing onProvideAssistContent(), you provide the Assistant with structured information
-     * about the current foreground content.
+     * By implementing onProvideAssistContent(), you provide the Assistant with structured
+     * information about the current foreground content.
      *
-     * This contextual information enables the Assistant to continue being helpful after the user enters your app.
+     * This contextual information enables the Assistant to continue being helpful after the user
+     * enters your app.
      */
     override fun onProvideAssistContent(outContent: AssistContent) {
         super.onProvideAssistContent(outContent)
@@ -92,12 +96,15 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     }
 
     /**
-     * Callback method from the FitStatsFragment to indicate that the tracking activity flow should be shown.
+     * Callback method from the FitStatsFragment to indicate that the tracking activity flow
+     * should be shown.
      */
     override fun onStartActivity() {
         updateView(
             newFragmentClass = FitTrackingFragment::class.java,
-            arguments = Bundle().apply { putSerializable(FitTrackingFragment.PARAM_TYPE, FitActivity.Type.RUNNING) },
+            arguments = Bundle().apply {
+                putSerializable(FitTrackingFragment.PARAM_TYPE, FitActivity.Type.RUNNING)
+            },
             toBackStack = true
         )
     }
@@ -115,11 +122,29 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     }
 
     /**
+     * Handles the action from the intent base on the type.
+     *
+     * @receiver the intent to handle
+     */
+    private fun Intent.handleIntent() {
+        when (action) {
+            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
+            Intent.ACTION_VIEW -> handleDeepLink(data)
+            // When the action is triggered by the Google search action, the ACTION_SEARCH will be used
+            SearchIntents.ACTION_SEARCH -> handleSearchIntent(
+                searchQuery = intent.getStringExtra(SearchManager.QUERY)
+            )
+            // Otherwise start the app as you would normally do.
+            else -> showDefaultView()
+        }
+    }
+
+    /**
      * Use the URI provided by the intent to handle the different deep-links
      */
     private fun handleDeepLink(data: Uri?) {
         // path is normally used to indicate which view should be displayed
-        // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> "start" will be the path
+        // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> path = "start"
         var actionHandled = true
         when (data?.path) {
             DeepLink.STATS -> {
@@ -129,7 +154,9 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
                 // Get the parameter defined as "exerciseType" and add it to the fragment arguments
                 val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
                 val type = FitActivity.Type.find(exerciseType)
-                val arguments = Bundle().apply { putSerializable(FitTrackingFragment.PARAM_TYPE, type) }
+                val arguments = Bundle().apply {
+                    putSerializable(FitTrackingFragment.PARAM_TYPE, type)
+                }
 
                 updateView(FitTrackingFragment::class.java, arguments)
             }
@@ -151,14 +178,16 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     }
 
     /**
-     * In the event where Google Assistant is confident that the user wishes to access your app via the Assistant,
-     * but is unable to resolve the query to a built-in intent, a search intent will be sent to the app.
+     * In the event where Google Assistant is confident that the user wishes to access your app
+     * via the Assistant, but is unable to resolve the query to a built-in intent, a search intent
+     * will be sent to the app.
      *
      * Handle the given query
      */
     private fun handleSearchIntent(searchQuery: String?) {
-        // The app does not have a search functionality, we could parse the search query, but the normal use case would
-        // would be to use the query in a search box. For this sample we just show the home screen
+        // The app does not have a search functionality, we could parse the search query,
+        // but the normal use case would would be to use the query in a search box.
+        // For this sample we just show the home screen
         showDefaultView()
     }
 
@@ -194,7 +223,8 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
      * Show ongoing activity or stats if none
      */
     private fun showDefaultView() {
-        val fragmentClass = if (FitRepository.getInstance(this).getOnGoingActivity().value != null) {
+        val onGoing = FitRepository.getInstance(this).getOnGoingActivity().value
+        val fragmentClass = if (onGoing != null) {
             FitTrackingFragment::class.java
         } else {
             FitStatsFragment::class.java
