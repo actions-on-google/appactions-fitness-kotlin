@@ -139,6 +139,34 @@ defines actions in the `AndroidManifest.xml`. Remove the metadata tag to upload 
     android:resource="@xml/actions" />
 ```
 
+If project is not compiling after changing the applicationId, the main
+reason is GoogleService plugin
+
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugGoogleServices'.
+> No matching client found for package name 'com.name.package'
+```
+
+Check the requirement section, you must update the json file or disable the plugin.
+
+If instead the problem is that the app is not being installed, showing this error:
+```
+Installation did not succeed.
+The application could not be installed: INSTALL_FAILED_CONFLICTING_PROVIDER
+Installation failed due to: 'null'
+```
+
+It's because you have installed the sample version without changing the applicaitonId and
+the authority for the SliceProvider are conflicting when trying to install the new one with different id. 
+* Change the authority of SliceProvider in AndroidManifest.xml, in actions.xml and in FitSliceProvider.kt
+* Or uninstall the sample and install again with the new applicationId. 
+
+Last but not least, remember to update the preview in the App Actions plugin every time
+you change actions.xml file. Otherwise by just running the app the changes won't be applied.
+
 ## License
 ```
 Copyright 2019 Google LLC

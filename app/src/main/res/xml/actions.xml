@@ -45,10 +45,11 @@
         <!-- You can define the fulfillment mode, it can be SLICE or DEEPLINK -->
         <!-- When slice is used, make sure you are supporting slices in your app -->
         <!-- Also, not that the urlTemplate must be of the style content://{slice_provider_authority}/... -->
+        <!-- Make sure that the authority matches with the one defined in AndroidManifest.xml -->
 
         <fulfillment
             fulfillmentMode="actions.fulfillment.SLICE"
-            urlTemplate="content://com.devrel.android.fitactions.FitSliceProvider/stats{?exerciseType}">
+            urlTemplate="content://com.devrel.android.fitactions.slices.provider/stats{?exerciseType}">
 
             <!-- If a parameter is set as required, the action will only be fulfilled if the parameter is found -->
             <!-- That's why a fallback urlTemplate needs to be provided for such case. -->

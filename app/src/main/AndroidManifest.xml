@@ -72,11 +72,14 @@
             android:enabled="true"
             android:exported="true" />
 
-        <!-- Define your SliceProvider, remember that authorities must be unique between different apps -->
-        <!-- And this authority is used as urlTemplate for app actions with Slices -->
+        <!-- Define your SliceProvider, you can define the authority name as you prefer but -->
+        <!-- remember that authorities must be unique between different apps -->
+        <!-- https://developer.android.com/guide/topics/providers/content-provider-creating#designing-an-authority -->
+        <!-- This authority is used as urlTemplate for app actions with Slices -->
+        <!-- And to grant access to SliceManager, see grantAssistantPermissions in FitApp.kt -->
         <provider
             android:name="com.devrel.android.fitactions.slices.FitSliceProvider"
-            android:authorities="${applicationId}.FitSliceProvider"
+            android:authorities="com.devrel.android.fitactions.slices.provider"
             android:exported="true">
 
             <intent-filter>
