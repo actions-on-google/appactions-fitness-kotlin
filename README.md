@@ -1,10 +1,10 @@
 # App Actions Fitness Basic Sample
 
 This is a sample Fitness application that allows displaying workout information as well as starting
-and stopping a workout. By implementing [App Actions](https://developers.google.com/actions/app/ ),
+and stopping a workout. By implementing [App Actions](https://developers.google.com/assistant/app/),
 we allow the user to call upon our application to fulfill supported actions from our Fitness
 vertical Assistant
-[built-in intents (BIIs)](https://developers.google.com/actions/discovery/built-in-intents).
+[built-in intents (BIIs)](https://developers.google.com/assistant/discovery/built-in-intents).
 
 Specifically, this sample supports the following BIIs:
 * `START_EXERCISE` - opens the sample app and starts an exercise session
@@ -16,13 +16,13 @@ the Assistant with information on a particular exercise statistic
 
 ## App Actions overview
 
-With [App Actions](https://developers.google.com/actions/app/ ), your app can be triggered by users
+With [App Actions](https://developers.google.com/assistant/app/), your app can be triggered by users
 through the Google Assistant on Android devices. To support App Actions, your app must implement
 [Android deep links](https://developer.android.com/training/app-links/deep-linking) to your app
 content, allowing the Android system to invoke a specific Activity when the App Action is triggered.
 
 Users invoke App Actions through phrases associated with
-[built-in intents (BIIs)](https://developers.google.com/actions/discovery/built-in-intents). The
+[built-in intents (BIIs)](https://developers.google.com/assistant/discovery/built-in-intents). The
 Assistant handles these BIIs so that your app receives the user's input without you needing to
 create a conversational Action, or having to deal with natural language processing by yourself.
 
