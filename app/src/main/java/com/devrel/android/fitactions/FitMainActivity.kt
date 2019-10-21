@@ -37,17 +37,22 @@ import org.json.JSONObject
  */
 class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
+    /**
+     * Handle the intent this activity was launched with.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
+    }
 
-        // Get the action and data from the intent to handle it.
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
-        when (action) {
-            // Otherwise start the app as you would normally do.
-            else -> showDefaultView()
-        }
+    /**
+     * Handle new intents that are coming while the activity is on foreground since we set the
+     * launchMode to be singleTask, avoiding multiple instances of this activity to be created.
+     *
+     * See [launchMode](https://developer.android.com/guide/topics/manifest/activity-element#lmode)
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 
     /**
@@ -57,29 +62,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         when (fragment) {
             is FitStatsFragment -> fragment.actionsCallback = this
             is FitTrackingFragment -> fragment.actionsCallback = this
-        }
-    }
-
-    /**
-     * When the user invokes an App Action while in your app, users will see a suggestion
-     * to share their foreground content.
-     *
-     * By implementing onProvideAssistContent(), you provide the Assistant with structured information
-     * about the current foreground content.
-     *
-     * This contextual information enables the Assistant to continue being helpful after the user enters your app.
-     */
-    override fun onProvideAssistContent(outContent: AssistContent) {
-        super.onProvideAssistContent(outContent)
-
-        // JSON-LD object based on Schema.org structured data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // This is just an example, more accurate information should be provided
-            outContent.structuredData = JSONObject()
-                .put("@type", "ExerciseObservation")
-                .put("name", "My last runs")
-                .put("url", "https://fit-actions.firebaseapp.com/stats")
-                .toString()
         }
     }
 
@@ -104,18 +86,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         } else {
             updateView(FitStatsFragment::class.java)
         }
-    }
-
-    /**
-     * In the event where Google Assistant is confident that the user wishes to access your app via the Assistant,
-     * but is unable to resolve the query to a built-in intent, a search intent will be sent to the app.
-     *
-     * Handle the given query
-     */
-    private fun handleSearchIntent(searchQuery: String?) {
-        // The app does not have a search functionality, we could parse the search query, but the normal use case would
-        // would be to use the query in a search box. For this sample we just show the home screen
-        showDefaultView()
     }
 
     /**
