@@ -37,18 +37,67 @@ import org.json.JSONObject
  */
 class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
+    /**
+     * Handle the intent this activity was launched with.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
 
-        // Get the action and data from the intent to handle it.
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
+        intent?.handleIntent()
+    }
+
+    /**
+     * Handle new intents that are coming while the activity is on foreground since we set the
+     * launchMode to be singleTask, avoiding multiple instances of this activity to be created.
+     *
+     * See [launchMode](https://developer.android.com/guide/topics/manifest/activity-element#lmode)
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        intent?.handleIntent()
+    }
+
+    /**
+     * Handles the action from the intent base on the type.
+     *
+     * @receiver the intent to handle
+     */
+    private fun Intent.handleIntent() {
         when (action) {
-            // When the action is triggered by a deep-link, Intent.ACTION_VIEW will be used
+            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> handleDeepLink(data)
             // Otherwise start the app as you would normally do.
             else -> showDefaultView()
+        }
+    }
+
+    /**
+     * Use the URI provided by the intent to handle the different deep-links
+     */
+    private fun handleDeepLink(data: Uri?) {
+        // path is normally used to indicate which view should be displayed
+        // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> path = "start"
+        when (data?.path) {
+            DeepLink.START -> {
+                // Get the parameter defined as "exerciseType" and add it to the fragment arguments
+                val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
+                val type = FitActivity.Type.find(exerciseType)
+                val arguments = Bundle().apply {
+                    putSerializable(FitTrackingFragment.PARAM_TYPE, type)
+                }
+                updateView(FitTrackingFragment::class.java, arguments)
+            }
+            DeepLink.STOP -> {
+                // Stop the tracking service if any and return to home screen.
+                stopService(Intent(this, FitTrackingService::class.java))
+                updateView(FitStatsFragment::class.java)
+            }
+            else -> {
+                // path is not supported or invalid, start normal flow.
+                showDefaultView()
+            }
         }
     }
 
@@ -59,29 +108,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         when (fragment) {
             is FitStatsFragment -> fragment.actionsCallback = this
             is FitTrackingFragment -> fragment.actionsCallback = this
-        }
-    }
-
-    /**
-     * When the user invokes an App Action while in your app, users will see a suggestion
-     * to share their foreground content.
-     *
-     * By implementing onProvideAssistContent(), you provide the Assistant with structured information
-     * about the current foreground content.
-     *
-     * This contextual information enables the Assistant to continue being helpful after the user enters your app.
-     */
-    override fun onProvideAssistContent(outContent: AssistContent) {
-        super.onProvideAssistContent(outContent)
-
-        // JSON-LD object based on Schema.org structured data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // This is just an example, more accurate information should be provided
-            outContent.structuredData = JSONObject()
-                .put("@type", "ExerciseObservation")
-                .put("name", "My last runs")
-                .put("url", "https://fit-actions.firebaseapp.com/stats")
-                .toString()
         }
     }
 
@@ -106,18 +132,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
         } else {
             updateView(FitStatsFragment::class.java)
         }
-    }
-
-    /**
-     * In the event where Google Assistant is confident that the user wishes to access your app via the Assistant,
-     * but is unable to resolve the query to a built-in intent, a search intent will be sent to the app.
-     *
-     * Handle the given query
-     */
-    private fun handleSearchIntent(searchQuery: String?) {
-        // The app does not have a search functionality, we could parse the search query, but the normal use case would
-        // would be to use the query in a search box. For this sample we just show the home screen
-        showDefaultView()
     }
 
     /**
@@ -157,28 +171,6 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
                 addToBackStack(null)
             }
             commit()
-        }
-    }
-
-    private fun handleDeepLink(data: Uri?) {
-        when (data?.path) {
-            DeepLink.START -> {
-                // Get the parameter defined as "exerciseType" and add it to the fragment arguments
-                val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
-                val type = FitActivity.Type.find(exerciseType)
-                val arguments = Bundle().apply { putSerializable(FitTrackingFragment.PARAM_TYPE, type) }
-
-                updateView(FitTrackingFragment::class.java, arguments)
-            }
-            DeepLink.STOP -> {
-                // Stop the tracking service if any and return to home screen.
-                stopService(Intent(this, FitTrackingService::class.java))
-                updateView(FitStatsFragment::class.java)
-            }
-            else -> {
-                // Path is not supported or invalid, start normal flow.
-                showDefaultView()
-            }
         }
     }
 }
