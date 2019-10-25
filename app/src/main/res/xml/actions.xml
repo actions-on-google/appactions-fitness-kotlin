@@ -22,15 +22,15 @@
     <entity-set entitySetId="ExerciseEntitySet">
         <entity
                 name="@string/activity_running"
-                alternateName="@array/runningSynonyms"
                 identifier="RUNNING" />
         <entity
                 name="@string/activity_walking"
-                alternateName="@array/walkingSynonyms"
+                identifier="WALKING" />
+        <entity
+                name="@string/activity_hiking"
                 identifier="WALKING" />
         <entity
                 name="@string/activity_cycling"
-                alternateName="@array/cyclingSynonyms"
                 identifier="CYCLING" />
     </entity-set>
 </actions>
