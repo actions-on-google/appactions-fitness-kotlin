@@ -45,4 +45,6 @@
     <string name="activity_cycling">Cycling</string>
     <string name="activity_walking">Walking</string>
     <string name="activity_unknown">Unknown</string>
+
+    <string name="activity_hiking">Hiking</string>
 </resources>
