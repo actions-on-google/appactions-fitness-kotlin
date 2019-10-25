@@ -17,11 +17,8 @@
 
 package com.devrel.android.fitactions
 
-import android.app.SearchManager
-import android.app.assist.AssistContent
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -30,7 +27,6 @@ import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
-import org.json.JSONObject
 
 /**
  * Main activity responsible for the app navigation and handling deep-links.
@@ -43,6 +39,8 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
+
+        this.intent?.handleIntent()
     }
 
     /**
@@ -53,6 +51,17 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+
+        intent?.handleIntent()
+    }
+
+    /**
+     * Handles the action from the intent base on the type.
+     *
+     * @receiver the intent to handle
+     */
+    private fun Intent.handleIntent() {
+        showDefaultView()
     }
 
     /**
