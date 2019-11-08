@@ -31,6 +31,7 @@ if (firebaseEnabled) {
 
 android {
     compileSdkVersion 29
+
     defaultConfig {
         applicationId "com.devrel.android.fitactions"
         minSdkVersion 21
@@ -40,7 +41,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "boolean", "FIREBASE_ENABLED", "$firebaseEnabled"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.incremental": "true"]
+            }
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -62,14 +70,14 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0-beta01'
 
     // Material components
-    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-appindexing:19.0.0'
 
     // Room DB
-    def room_version = "2.2.0"
+    def room_version = "2.2.1"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
