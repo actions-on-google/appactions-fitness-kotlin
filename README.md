@@ -6,7 +6,7 @@ For detailed instructions on using this code, refer to the [Extend an Android ap
 
 ## App Sample Overview
 
-This is a sample Fitness application that allows displaying workout information as well as starting
+This is a sample fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](https://developers.google.com/assistant/app/),
 we allow the user to call upon our application to fulfill supported actions from our Health and fitness
 vertical Assistant
