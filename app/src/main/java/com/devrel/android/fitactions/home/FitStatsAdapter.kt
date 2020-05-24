@@ -75,7 +75,7 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
                 R.string.stat_date,
                 day,
                 calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.MONTH)
+                calendar.get(Calendar.MONTH) + 1
             )
 
             val minutes = TimeUnit.MILLISECONDS.toMinutes(activity.durationMs)
