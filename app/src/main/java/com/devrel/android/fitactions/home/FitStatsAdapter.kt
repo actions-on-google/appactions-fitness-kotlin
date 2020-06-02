@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.devrel.android.fitactions.R
 import com.devrel.android.fitactions.model.FitActivity
 import kotlinx.android.synthetic.main.fit_stats_row.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -71,11 +72,12 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
                 Calendar.LONG,
                 Locale.getDefault()
             )
+            val monthFormatter = SimpleDateFormat("MM");
             itemView.statsRowTitle.text = context.getString(
                 R.string.stat_date,
                 day,
                 calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.MONTH) + 1
+                monthFormatter.format(calendar.time).toInt()
             )
 
             val minutes = TimeUnit.MILLISECONDS.toMinutes(activity.durationMs)
