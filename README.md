@@ -44,10 +44,7 @@ Android Studio with the following steps:
 
 ## Requirements
 
-The App Actions feature is in Developer Preview, so running the sample or using App Actions in
-another app requires a few extra steps.
-
-The `actions.xml` file that defines the supported actions for your app (or in this case the sample), 
+The `actions.xml` file that defines the supported actions for your app (or in this case the sample),
 needs to be uploaded for the Assistant. This is done using the
 [App Actions test tool](https://developers.google.com/assistant/app/test-tool) Android Studio
 plugin (installation instructions are listed below).
@@ -131,16 +128,7 @@ If the action is not running in the device or Assistant is not reacting, make su
 * The plugin loaded the actions preview at least one time.
 * The account in the device is the same as the one in Android Studio.
 * The device has access to an internet connection.
-* You are using the latest version of the Assistant or Google app. 
-
-App Actions is in Developer Preview, so you can't upload an application to Google Play that
-defines actions in the `AndroidManifest.xml`. Remove the metadata tag to upload it:
-
-```xml
-<meta-data
-    android:name="com.google.android.actions"
-    android:resource="@xml/actions" />
-```
+* You are using the latest version of the Assistant or Google app.
 
 If project does not compile after changing the applicationId, the main reason is GoogleService
 plugin:
@@ -172,6 +160,19 @@ different ID.
 
 Last but not least, remember to update the preview in the App Actions plugin every time
 you change `actions.xml`. Just running the app won't apply the changes.
+
+## Contribution guidelines
+
+If you want to contribute to this project, be sure to review the
+[contribution guidelines](CONTRIBUTING.md).
+
+We use [GitHub issues](https://github.com/actions-on-google/appactions-fitness-kotlin/issues) for
+tracking requests and bugs, please get support by posting your technical questions to
+[Stack Overflow](https://stackoverflow.com/questions/tagged/app-actions).
+
+Report [general issues with App Actions features](https://issuetracker.google.com/issues/new?component=617864&template=1257475)
+or [make suggestions for additional built-in intents](https://issuetracker.google.com/issues/new?component=617864&template=1261453)
+through our public issue tracker.
 
 ## License
 ```

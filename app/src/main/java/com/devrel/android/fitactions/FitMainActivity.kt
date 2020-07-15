@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 
 package com.devrel.android.fitactions
 
-import android.app.SearchManager
 import android.app.assist.AssistContent
 import android.content.Intent
 import android.net.Uri
@@ -30,7 +29,6 @@ import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
-import com.google.android.gms.actions.SearchIntents
 import com.google.firebase.appindexing.Action
 import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.builders.AssistActionBuilder
@@ -130,10 +128,6 @@ class FitMainActivity :
         when (action) {
             // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> handleDeepLink(data)
-            // When the action is triggered by the Google search action, the ACTION_SEARCH will be used
-            SearchIntents.ACTION_SEARCH -> handleSearchIntent(
-                searchQuery = intent.getStringExtra(SearchManager.QUERY)
-            )
             // Otherwise start the app as you would normally do.
             else -> showDefaultView()
         }
@@ -175,20 +169,6 @@ class FitMainActivity :
         }
 
         notifyActionSuccess(actionHandled)
-    }
-
-    /**
-     * In the event where Google Assistant is confident that the user wishes to access your app
-     * via the Assistant, but is unable to resolve the query to a built-in intent, a search intent
-     * will be sent to the app.
-     *
-     * Handle the given query
-     */
-    private fun handleSearchIntent(searchQuery: String?) {
-        // The app does not have a search functionality, we could parse the search query,
-        // but the normal use case would would be to use the query in a search box.
-        // For this sample we just show the home screen
-        showDefaultView()
     }
 
     /**

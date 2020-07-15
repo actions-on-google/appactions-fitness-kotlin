@@ -45,10 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Required to support search action intents from Google Search -->
             <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
