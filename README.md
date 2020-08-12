@@ -9,7 +9,7 @@ fitness category.
 Specifically, this sample supports the following BIIs:
 * `actions.intent.START_EXERCISE`: Open the sample app and start an exercise session.
 * `actions.intent.STOP_EXERCISE`: Open the sample app and stops the current exercise session.
-* `actions.intentGET_EXERCISE_OBSERVATION`: Display a
+* `actions.intent.GET_EXERCISE_OBSERVATION`: Display a
   [Slice](https://developer.android.com/guide/slices) inside the Assistant with information on a
   particular exercise statistic.
 
