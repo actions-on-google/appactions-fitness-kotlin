@@ -15,6 +15,16 @@ Specifically, this sample supports the following BIIs:
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
 
+## Beta available
+
+Check out the [App Actions Beta sample](https://github.com/actions-on-google/appactions-common-biis-kotlin/tree/codelab-complete-beta)
+that implementes App Actions using the [Android Shortcuts](https://developer.android.com/guide/topics/ui/shortcuts)
+framework. This framework integration is in the Beta release stage.
+
+If you're learning how to maintain App Actions implemented using an
+[actions.xml](https://developers.google.com/assistant/app/action-schema) resource
+file, continue with this sample.
+
 ## App Actions overview
 
 With [App Actions](https://developers.google.com/assistant/app/), users can trigger your app through
@@ -63,13 +73,13 @@ android {
         applicationId "com.devrel.android.fitactions" // Use one of your published applications IDs
     }
 }
-``` 
+```
 
-Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device 
+Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device
 with the same account used in Android Studio.
 
-Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the 
-actions received. Re-use or create an app in Firebase following 
+Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the
+actions received. Re-use or create an app in Firebase following
 [these steps](https://firebase.google.com/docs/android/setup) and make sure `google-services.json`
 is available in the app module.
 
@@ -91,7 +101,7 @@ Once the requirements above are satisfied, you are ready to run the sample.
 
 The Assistant should show up and run the selected action.
 
-Once you run this once, you can then try using voice or written commands directly in the 
+Once you run this once, you can then try using voice or written commands directly in the
 Assistant on the device.
 
 ### Installing the App Actions test tool
@@ -116,7 +126,7 @@ Make sure that you follow these steps:
 * App is available in the device.
 
 If the plugin is not able to load the preview of the action, make sure that:
- 
+
 * The account used in Android Studio is the same as the one in the device.
 * The account used must own or have access in Play console to the applicationId defined
 in `build.gradle`.
@@ -156,7 +166,7 @@ different ID.
 
 * Change the authority of SliceProvider in `AndroidManifest.xml`, in `actions.xml`, and in
   `FitSliceProvider.kt`.
-* Or uninstall the sample and install again with the new applicationId. 
+* Or uninstall the sample and install again with the new applicationId.
 
 Last but not least, remember to update the preview in the App Actions plugin every time
 you change `actions.xml`. Just running the app won't apply the changes.
