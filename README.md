@@ -54,13 +54,9 @@ Android Studio with the following steps:
 
 ## Requirements
 
-The `actions.xml` file that defines the supported actions for your app (or in this case the sample),
-needs to be uploaded for the Assistant. This is done using the
-[App Actions test tool](https://developers.google.com/assistant/app/test-tool) Android Studio
-plugin (installation instructions are listed below).
+For security and verification reasons, the account you use to upload your `actions.xml` file with the App Actions test tool must have ownership of the application ID.
 
-For security and verification reasons, when uploading the `actions.xml` file with the plugin, the
-account used must have ownership of the application ID.
+Additionally, you must meet the setup and usage requirements for [App Actions](https://developers.google.com/assistant/app/get-started#requirements) and for the [App Actions test tool](https://developers.google.com/assistant/app/test-tool#setup_requirements).
 
 [Sign in to Android Studio](https://developer.android.com/studio/intro#sign-in) with your account
 and use the applicationId of one of your published apps in Google Play Console. If you don't have
@@ -91,26 +87,18 @@ Note: As an alternative, if you want to skip this step, you can disable Firebase
 Once the requirements above are satisfied, you are ready to run the sample.
 
 1. Run the code and install the sample in the device (Run `app`).
-2. Open the App Actions plugin (**Tools > App Actions Test Tool**).
+2. Open the App Actions plugin (**Tools > Google Assistant > App Actions Test Tool**).
 3. Define an invocation name to use for triggering the actions (like "My Fit App").
 4. Click **Create Preview**. If the setup was successful, you will see a panel like this:
 
 ![app-actions-plugin](media/app-actions-plugin.png "App Actions Plugin")
 
-5. Select the action and click **Run**.
+5. Select the action and click **Run App Action**.
 
 The Assistant should show up and run the selected action.
 
 Once you run this once, you can then try using voice or written commands directly in the
 Assistant on the device.
-
-### Installing the App Actions test tool
-
-1. If you use Linux or Windows, go to **File > Settings**. For MacOS, go to
-   **Android Studio > Preferences**.
-2. Select the **Plugins** section.
-3. Search for "**App Actions Test Tool**".
-4. Click **Install** and restart your IDE.
 
 ## Troubleshooting
 

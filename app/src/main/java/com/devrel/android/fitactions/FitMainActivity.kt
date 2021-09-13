@@ -195,7 +195,7 @@ class FitMainActivity :
                 .build()
 
             // Send the end action to the Firebase app indexing.
-            FirebaseUserActions.getInstance().end(action)
+            FirebaseUserActions.getInstance(getApplicationContext()).end(action)
         }
     }
 
