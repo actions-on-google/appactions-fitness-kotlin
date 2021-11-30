@@ -20,7 +20,7 @@ package com.devrel.android.fitactions.slices
 import android.net.Uri
 import androidx.slice.Slice
 import androidx.slice.SliceProvider
-import com.devrel.android.fitactions.DeepLink
+import com.devrel.android.fitactions.STATS
 import com.devrel.android.fitactions.model.FitRepository
 
 
@@ -69,7 +69,7 @@ class FitSliceProvider : SliceProvider() {
         }
         return when (sliceUri.path) {
 
-            DeepLink.STATS -> FitStatsSlice(
+            STATS -> FitStatsSlice(
                 context = context,
                 sliceUri = sliceUri,
                 fitRepo = FitRepository.getInstance(context)

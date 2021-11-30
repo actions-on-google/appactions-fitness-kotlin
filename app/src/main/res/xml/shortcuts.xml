@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- shortcuts are bound to the START_EXERCISE capability, and represents the different types
+      of exercises-->
+    <shortcut
+        android:shortcutId="running"
+        android:shortcutShortLabel="@string/activity_running">
+        <capability-binding android:key="actions.intent.START_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/runningSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="walking"
+        android:shortcutShortLabel="@string/activity_walking">
+        <capability-binding android:key="actions.intent.START_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/walkingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="cycling"
+        android:shortcutShortLabel="@string/activity_cycling">
+        <capability-binding android:key="actions.intent.START_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/cyclingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <!--    START_EXERCISE BII
+        https://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/start-exercise
+        Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
+        application ID you specified in app/build.gradle.
+    -->
+    <capability android:name="actions.intent.START_EXERCISE">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="PUT_YOUR_APPLICATION_ID_HERE"
+            android:targetClass="com.devrel.android.fitactions.FitMainActivity">
+            <!-- Eg. exercisePlanName = "running" -->
+            <parameter
+                android:name="exercise.name"
+                android:key="exerciseType"/>
+        </intent>
+    </capability>
+
+    <!--    STOP_EXERCISE BII
+        https://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/stop-exercise
+        Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
+        application ID you specified in app/build.gradle.
+    -->
+    <capability android:name="actions.intent.STOP_EXERCISE">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="PUT_YOUR_APPLICATION_ID_HERE"
+            android:targetClass="com.devrel.android.fitactions.FitMainActivity">
+            <!-- Eg. name = "Running" -->
+            <parameter
+                android:name="exercise.name"
+                android:key="stopExercise"/>
+        </intent>
+    </capability>
+
+    <!--    GET_EXERCISE_OBSERVATION
+        hhttps://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/get-exercise-observation
+        Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
+        application ID you specified in app/build.gradle.
+    -->
+    <shortcut
+        android:shortcutId="running"
+        android:shortcutShortLabel="@string/activity_running">
+        <capability-binding android:key="actions.intent.GET_EXERCISE_OBSERVATION">
+            <parameter-binding
+                android:key="exerciseObservation.aboutExercise.name"
+                android:value="@array/runningSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="walking"
+        android:shortcutShortLabel="@string/activity_walking">
+        <capability-binding android:key="actions.intent.GET_EXERCISE_OBSERVATION">
+            <parameter-binding
+                android:key="exerciseObservation.aboutExercise.name"
+                android:value="@array/walkingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="cycling"
+        android:shortcutShortLabel="@string/activity_cycling">
+        <capability-binding android:key="actions.intent.GET_EXERCISE_OBSERVATION">
+            <parameter-binding
+                android:key="exerciseObservation.aboutExercise.name"
+                android:value="@array/cyclingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <capability android:name="actions.intent.GET_EXERCISE_OBSERVATION">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="PUT_YOUR_APPLICATION_ID_HERE"
+            android:targetClass="com.devrel.android.fitactions.FitMainActivity">
+            <!-- Eg. endTime = "2011-12-20T11:59:59" -->
+            <parameter
+                android:name="exerciseObservation.endTime"
+                android:key="endTime"/>
+            <!-- Eg. startTime = "2011-12-20T05:00:00" -->
+            <parameter
+                android:name="exerciseObservation.startTime"
+                android:key="startTime"/>
+            <!-- Eg. aboutExerciseName = "Climbing" -->
+            <parameter
+                android:name="exerciseObservation.aboutExercise.name"
+                android:key="aboutExerciseName"/>
+        </intent>
+    </capability>
+
+</shortcuts>
