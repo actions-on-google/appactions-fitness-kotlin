@@ -18,6 +18,7 @@
 <resources>
 
     <array name="runningSynonyms">
+        <item>Running</item>
         <item>Run</item>
         <item>Jog</item>
         <item>Jogging</item>
@@ -34,6 +35,8 @@
         <item>Biking</item>
         <item>Riding</item>
         <item>Pedaling</item>
+        <item>Cycling</item>
+        <item>Cycle</item>
     </array>
 
 </resources>

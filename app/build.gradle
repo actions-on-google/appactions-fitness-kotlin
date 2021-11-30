@@ -60,6 +60,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -82,8 +85,8 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    // AppActions and Slices
-    implementation "androidx.slice:slice-builders-ktx:1.0.0-alpha6"
+    // AppActions
+    implementation "com.google.assistant.appactions:widgets:0.0.1"
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.1'

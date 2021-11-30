@@ -1,4 +1,4 @@
-# App Actions fitness sample
+# App Actions fitness basic sample
 
 This is a sample Fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](https://developers.google.com/assistant/app/),
@@ -10,16 +10,28 @@ Specifically, this sample supports the following BIIs:
 * `actions.intent.START_EXERCISE`: Open the sample app and start an exercise session.
 * `actions.intent.STOP_EXERCISE`: Open the sample app and stops the current exercise session.
 * `actions.intent.GET_EXERCISE_OBSERVATION`: Display a
-  [Slice](https://developer.android.com/guide/slices) inside the Assistant with information on a
+  [widget](https://developers.google.com/assistant/app/widgets) inside the Assistant with information on a
   particular exercise statistic.
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
+
+## Beta available
+
+Check out the [App Actions Beta sample](https://github.com/actions-on-google/appactions-common-biis-kotlin/tree/codelab-complete-beta)
+that implementes App Actions using the [Android Shortcuts](https://developer.android.com/guide/topics/ui/shortcuts)
+framework. This framework integration is in the Beta release stage.
+
+If you're learning how to maintain App Actions implemented using an
+[actions.xml](https://developers.google.com/assistant/app/action-schema) resource
+file, continue with this sample.
+
 
 ## How to use this sample
 
 Clone or download the project to your preferred location. Then, import and modify the project with the following steps:
 
-1. In Android Studio, select **Open an existing Android Studio project** from the initial screen, or go to **File > Open**.
+1. In Android Studio, select **Open an existing Android Studio project** from the initial screen, or go to
+   **File > Open**.
 2. Change the `applicationId` in [app/build.gradle](app/build.gradle) to the `applicationId` of one of your draft or published apps in the Google Play Console.
 
     ```groovy
@@ -30,6 +42,7 @@ Clone or download the project to your preferred location. Then, import and modif
         }
     }
     ```
+
 3. Change the three (3) `android:targetPackage` in [app/src/main/res/xml/shortcuts.xml](app/src/main/res/xml/shortcuts.xml) to the `applicationId` in your [app/build.gradle](app/build.gradle).
 
     ```xml
@@ -49,7 +62,7 @@ Clone or download the project to your preferred location. Then, import and modif
         </intent>
     </capability>
     ```
-
+   
     ```xml
     <capability android:name="actions.intent.GET_EXERCISE_OBSERVATION">
         <intent
@@ -62,8 +75,6 @@ Clone or download the project to your preferred location. Then, import and modif
 4. In Android Studio, find the root directory of the sample.
 5. Select the `build.gradle` file.
 6. Follow the instructions presented by the IDE.
-7. Install [Google Assistant plugin for Android Studio](https://developers.google.com/assistant/app/test-tool)
-
 
 Then, you can try the App Actions by following these steps:
 
@@ -94,9 +105,8 @@ through our public issue tracker.
 * [App Actions Overview](https://developers.google.com/assistant/app/overview)
 * [Built-in Intents reference](https://developers.google.com/assistant/app/reference/built-in-intents/bii-index)
 * [App Actions Test Tool](https://developers.google.com/assistant/app/test-tool)
-* [Codelabs](https://developers.google.com/assistant/app/codelabs)
+* [Codelab](https://developers.google.com/assistant/app/codelabs)
 * [Other samples](https://developers.google.com/assistant/app/samples)
-
 
 ## License
 ```

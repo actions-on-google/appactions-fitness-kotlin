@@ -22,8 +22,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.devrel.android.fitactions.BiiIntents.START_EXERCISE
+import com.devrel.android.fitactions.BiiIntents.STOP_EXERCISE
 import com.devrel.android.fitactions.home.FitStatsFragment
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
@@ -37,9 +41,15 @@ import org.json.JSONObject
 class FitMainActivity :
     AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
+    private val TAG = "FitMainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
+        Log.d(TAG, "======= Here ========= %s")
+
+        // Logging for troubleshooting purposes
+        logIntent(intent)
 
         // Handle the intent this activity was launched with.
         intent?.handleIntent()
@@ -54,6 +64,22 @@ class FitMainActivity :
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.handleIntent()
+    }
+
+    /**
+     * For debugging Android intents
+     */
+    fun logIntent(intent: Intent) {
+        val bundle: Bundle = intent.extras ?: return
+
+        Log.d(TAG, "======= logIntent ========= %s")
+        Log.d(TAG, "Logging intent data start")
+
+        bundle.keySet().forEach { key ->
+            Log.d(TAG, "[$key=${bundle.get(key)}]")
+        }
+
+        Log.d(TAG, "Logging intent data complete")
     }
 
     /**
