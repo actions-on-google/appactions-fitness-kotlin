@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Google LLC
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     https://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  -->
-
+    ~ Copyright 2019 Google LLC
+    ~
+    ~ Licensed under the Apache License, Version 2.0 (the "License");
+    ~ you may not use this file except in compliance with the License.
+    ~ You may obtain a copy of the License at
+    ~
+    ~     https://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing, software
+    ~ distributed under the License is distributed on an "AS IS" BASIS,
+    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    ~ See the License for the specific language governing permissions and
+    ~ limitations under the License.
+    ~
+    -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.devrel.android.fitactions">
@@ -23,7 +22,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="com.devrel.android.fitactions.FitApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -31,20 +29,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <receiver
+            android:name=".widgets.StatsWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/stats_widget" />
+        </receiver>
+        <service
+            android:name=".widgets.StatsWidgetProvider"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="com.google.assistant.appactions.widgets.PIN_APP_WIDGET" />
+            </intent-filter>
+        </service>
 
         <activity
-            android:name="com.devrel.android.fitactions.FitMainActivity"
+            android:name=".FitMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -67,31 +81,12 @@
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
-
         </activity>
 
         <service
-            android:name="com.devrel.android.fitactions.tracking.FitTrackingService"
+            android:name=".tracking.FitTrackingService"
             android:enabled="true"
             android:exported="true" />
-
-        <!-- Define your SliceProvider, you can define the authority name as you prefer but -->
-        <!-- remember that authorities must be unique between different apps -->
-        <!-- https://developer.android.com/guide/topics/providers/content-provider-creating#designing-an-authority -->
-        <!-- This authority is used as urlTemplate for app actions with Slices -->
-        <!-- And to grant access to SliceManager, see grantAssistantPermissions in FitApp.kt -->
-        <provider
-            android:name="com.devrel.android.fitactions.slices.FitSliceProvider"
-            android:authorities="com.devrel.android.fitactions.slices.provider"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.app.slice.category.SLICE" />
-            </intent-filter>
-
-        </provider>
 
     </application>
 

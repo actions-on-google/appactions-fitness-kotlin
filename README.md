@@ -1,4 +1,4 @@
-# App Actions fitness sample
+# App Actions fitness basic sample
 
 This is a sample Fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](https://developers.google.com/assistant/app/),
@@ -10,10 +10,20 @@ Specifically, this sample supports the following BIIs:
 * `actions.intent.START_EXERCISE`: Open the sample app and start an exercise session.
 * `actions.intent.STOP_EXERCISE`: Open the sample app and stops the current exercise session.
 * `actions.intent.GET_EXERCISE_OBSERVATION`: Display a
-  [Slice](https://developer.android.com/guide/slices) inside the Assistant with information on a
+  [widget](https://developers.google.com/assistant/app/widgets) inside the Assistant with information on a
   particular exercise statistic.
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
+
+## Beta available
+
+Check out the [App Actions Beta sample](https://github.com/actions-on-google/appactions-common-biis-kotlin/tree/codelab-complete-beta)
+that implementes App Actions using the [Android Shortcuts](https://developer.android.com/guide/topics/ui/shortcuts)
+framework. This framework integration is in the Beta release stage.
+
+If you're learning how to maintain App Actions implemented using an
+[actions.xml](https://developers.google.com/assistant/app/action-schema) resource
+file, continue with this sample.
 
 
 ## How to use this sample
@@ -52,7 +62,7 @@ Clone or download the project to your preferred location. Then, import and modif
         </intent>
     </capability>
     ```
-
+   
     ```xml
     <capability android:name="actions.intent.GET_EXERCISE_OBSERVATION">
         <intent
@@ -65,7 +75,6 @@ Clone or download the project to your preferred location. Then, import and modif
 4. In Android Studio, find the root directory of the sample.
 5. Select the `build.gradle` file.
 6. Follow the instructions presented by the IDE.
-7. Install [Google Assistant plugin for Android Studio](https://developers.google.com/assistant/app/test-tool)
 
 Then, you can try the App Actions by following these steps:
 
@@ -83,7 +92,7 @@ If you run into any issues, check out the [troubleshooting guide](https://develo
 If you want to contribute to this project, be sure to review the
 [contribution guidelines](CONTRIBUTING.md).
 
-We use [GitHub issues](https://github.com/actions-on-google/appactions-common-biis-kotlin/issues) for
+We use [GitHub issues](https://github.com/actions-on-google/appactions-fitness-kotlin/issues) for
 tracking requests and bugs, please get support by posting your technical questions to
 [Stack Overflow](https://stackoverflow.com/questions/tagged/app-actions).
 

@@ -66,6 +66,38 @@
         </intent>
     </capability>
 
+    <!-- shortcuts are bound to the STOP_EXERCISE capability, and represents the different types
+      of exercises-->
+    <shortcut
+        android:shortcutId="running"
+        android:shortcutShortLabel="@string/activity_running">
+        <capability-binding android:key="actions.intent.STOP_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/runningSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="walking"
+        android:shortcutShortLabel="@string/activity_walking">
+        <capability-binding android:key="actions.intent.STOP_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/walkingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="cycling"
+        android:shortcutShortLabel="@string/activity_cycling">
+        <capability-binding android:key="actions.intent.STOP_EXERCISE">
+            <parameter-binding
+                android:key="exercise.name"
+                android:value="@array/cyclingSynonyms"/>
+        </capability-binding>
+    </shortcut>
+
     <!--    STOP_EXERCISE BII
         https://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/stop-exercise
         Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
@@ -83,11 +115,8 @@
         </intent>
     </capability>
 
-    <!--    GET_EXERCISE_OBSERVATION
-        hhttps://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/get-exercise-observation
-        Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
-        application ID you specified in app/build.gradle.
-    -->
+    <!-- shortcuts are bound to the GET_EXERCISE_OBSERVATION capability, and represents the
+      different types of exercises-->
     <shortcut
         android:shortcutId="running"
         android:shortcutShortLabel="@string/activity_running">
@@ -118,24 +147,28 @@
         </capability-binding>
     </shortcut>
 
+    <!--    GET_EXERCISE_OBSERVATION
+        hhttps://developers.google.com/assistant/app/reference/built-in-intents/health-and-fitness/get-exercise-observation
+        Be sure to replace all occurrences of PUT_YOUR_APPLICATION_ID_HERE with the
+        application ID you specified in app/build.gradle.
+    -->
     <capability android:name="actions.intent.GET_EXERCISE_OBSERVATION">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="PUT_YOUR_APPLICATION_ID_HERE"
-            android:targetClass="com.devrel.android.fitactions.FitMainActivity">
-            <!-- Eg. endTime = "2011-12-20T11:59:59" -->
-            <parameter
-                android:name="exerciseObservation.endTime"
-                android:key="endTime"/>
-            <!-- Eg. startTime = "2011-12-20T05:00:00" -->
-            <parameter
-                android:name="exerciseObservation.startTime"
-                android:key="startTime"/>
-            <!-- Eg. aboutExerciseName = "Climbing" -->
+        <app-widget
+            android:identifier="GET_EXERCISE_OBSERVATION"
+            android:targetClass="com.devrel.android.fitactions.widgets.StatsWidgetProvider"
+            android:targetPackage="PUT_YOUR_APPLICATION_ID_HERE">
             <parameter
                 android:name="exerciseObservation.aboutExercise.name"
-                android:key="aboutExerciseName"/>
+                android:key="aboutExerciseName"
+                android:required="true">
+            </parameter>
+            <extra android:name="hasTts" android:value="true"/>
+        </app-widget>
+        <!-- Fallback intent with no parameters required to successfully execute.-->
+        <intent
+            android:identifier="GET_EXERCISE_OBSERVATION_FALLBACK"
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.devrel.android.fitactions.widgets.StatsWidgetProvider">
         </intent>
     </capability>
-
 </shortcuts>
