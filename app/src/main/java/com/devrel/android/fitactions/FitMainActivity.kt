@@ -32,7 +32,7 @@ import com.devrel.android.fitactions.tracking.FitTrackingService
 import org.json.JSONObject
 
 /**
- * Main activity responsible for the app navigation and handling deep-links.
+ * Main activity responsible for the app navigation and handling Android intents.
  */
 class FitMainActivity :
     AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
@@ -123,42 +123,37 @@ class FitMainActivity :
      */
     private fun Intent.handleIntent() {
         when (action) {
-            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
-            Intent.ACTION_VIEW -> handleDeepLink(data)
+            // When the BII is matched, Intent.Action_VIEW will be used
+            Intent.ACTION_VIEW -> handleIntent(data)
             // Otherwise start the app as you would normally do.
             else -> showDefaultView()
         }
     }
 
     /**
-     * Use the URI provided by the intent to handle the different deep-links
+     * Use extras provided by the intent to handle the different BIIs
      */
-    private fun handleDeepLink(data: Uri?) {
+    private fun handleIntent(data: Uri?) {
         // path is normally used to indicate which view should be displayed
         // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> path = "start"
-        when (data?.path) {
-            DeepLink.STATS -> {
-                updateView(FitStatsFragment::class.java)
-            }
-            DeepLink.START -> {
-                // Get the parameter defined as "exerciseType" and add it to the fragment arguments
-                val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
-                val type = FitActivity.Type.find(exerciseType)
-                val arguments = Bundle().apply {
-                    putSerializable(FitTrackingFragment.PARAM_TYPE, type)
-                }
 
-                updateView(FitTrackingFragment::class.java, arguments)
+        val startExercise = intent?.extras?.getString(START_EXERCISE)
+        val stopExercise = intent?.extras?.getString(STOP_EXERCISE)
+
+        if (startExercise != null){
+            val type = FitActivity.Type.find(startExercise)
+            val arguments = Bundle().apply {
+                putSerializable(FitTrackingFragment.PARAM_TYPE, type)
             }
-            DeepLink.STOP -> {
-                // Stop the tracking service if any and return to home screen.
-                stopService(Intent(this, FitTrackingService::class.java))
-                updateView(FitStatsFragment::class.java)
-            }
-            else -> {
-                // path is not supported or invalid, start normal flow.
-                showDefaultView()
-            }
+            updateView(FitTrackingFragment::class.java, arguments)
+        } else if(stopExercise != null){
+            // Stop the tracking service if any and return to home screen.
+            stopService(Intent(this, FitTrackingService::class.java))
+            updateView(FitStatsFragment::class.java)
+        } else{
+            // path is not supported or invalid, start normal flow.
+            showDefaultView()
+
         }
     }
 

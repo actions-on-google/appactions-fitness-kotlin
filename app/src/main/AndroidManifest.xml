@@ -62,6 +62,12 @@
                     android:host="fit-actions.firebaseapp.com"
                     android:scheme="https" />
             </intent-filter>
+
+            <!-- Required reference to App Actions shortcuts.xml file. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+
         </activity>
 
         <service
@@ -87,10 +93,6 @@
 
         </provider>
 
-        <!-- Add an indication where to find the actions.xml -->
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/actions" />
     </application>
 
 </manifest>

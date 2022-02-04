@@ -22,7 +22,7 @@ import android.net.Uri
 import androidx.lifecycle.Observer
 import androidx.slice.Slice
 import androidx.slice.builders.*
-import com.devrel.android.fitactions.DeepLink
+import com.devrel.android.fitactions.ACTIVITY_TYPE
 import com.devrel.android.fitactions.R
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
@@ -43,7 +43,7 @@ class FitStatsSlice(
      * Get the activity type from the uri and map it to our enum types.
      */
     private val activityType = FitActivity.Type.find(
-        sliceUri.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
+        sliceUri.getQueryParameter(ACTIVITY_TYPE).orEmpty()
     )
 
     /**
