@@ -74,14 +74,6 @@ android {
 Also, [Google Assistant](https://assistant.google.com/) must be installed on the test/target device
 with the same account used in Android Studio.
 
-Finally, the sample shows how to use the Firebase App Indexing to track the success or failure of the
-actions received. Re-use or create an app in Firebase following
-[these steps](https://firebase.google.com/docs/android/setup) and make sure `google-services.json`
-is available in the app module.
-
-Note: As an alternative, if you want to skip this step, you can disable Firebase by setting the
-`firebaseEnabled` flag to false in [app/build.gradle](app/build.gradle).
-
 ## How to run
 
 Once the requirements above are satisfied, you are ready to run the sample.
