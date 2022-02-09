@@ -125,51 +125,11 @@ class FitMainActivity :
      * @receiver the intent to handle
      */
     private fun Intent.handleIntent() {
-        when (action) {
-            // When the action is triggered by a deep-link, Intent.Action_VIEW will be used
-            Intent.ACTION_VIEW -> handleDeepLink(data)
-            // Otherwise start the app as you would normally do.
-            else -> showDefaultView()
-        }
+        showDefaultView()
     }
 
-    /**
-     * Use the URI provided by the intent to handle the different deep-links
-     */
-    private fun handleDeepLink(data: Uri?) {
-        // path is normally used to indicate which view should be displayed
-        // i.e https://fit-actions.firebaseapp.com/start?exerciseType="Running" -> path = "start"
-        var actionHandled = true
-        when (data?.path) {
-            DeepLink.STATS -> {
-                updateView(FitStatsFragment::class.java)
-            }
-            DeepLink.START -> {
-                // Get the parameter defined as "exerciseType" and add it to the fragment arguments
-                val exerciseType = data.getQueryParameter(DeepLink.Params.ACTIVITY_TYPE).orEmpty()
-                val type = FitActivity.Type.find(exerciseType)
-                val arguments = Bundle().apply {
-                    putSerializable(FitTrackingFragment.PARAM_TYPE, type)
-                }
+    // Add handleIntent function
 
-                updateView(FitTrackingFragment::class.java, arguments)
-            }
-            DeepLink.STOP -> {
-                // Stop the tracking service if any and return to home screen.
-                stopService(Intent(this, FitTrackingService::class.java))
-                updateView(FitStatsFragment::class.java)
-            }
-            else -> {
-                // path is not supported or invalid, start normal flow.
-                showDefaultView()
-
-                // Unknown or invalid action
-                actionHandled = false
-            }
-        }
-
-        notifyActionSuccess(actionHandled)
-    }
 
     /**
      * Log a success or failure of the received action based on if your app could handle the action
