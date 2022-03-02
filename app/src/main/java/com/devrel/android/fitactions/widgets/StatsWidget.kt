@@ -25,9 +25,9 @@ import com.devrel.android.fitactions.R
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.observeOnce
-import com.google.assistant.appactions.widgets.AppActionsWidgetExtension
 import java.util.*
 import java.util.concurrent.TimeUnit
+// Add imports
 
 
 /**
@@ -42,36 +42,15 @@ class StatsWidget(
 ) {
     private val views = RemoteViews(context.packageName, layout)
     private val repository = FitRepository.getInstance(context)
-    private val hasBii: Boolean
-    private val isFallbackIntent: Boolean
-    private val aboutExerciseName: String
-    private val exerciseType: FitActivity.Type
+    // Add private variables
 
-    init {
-        val optionsBundle = appWidgetManager.getAppWidgetOptions(appWidgetId)
-        val bii = optionsBundle.getString(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_BII)
-        hasBii = !bii.isNullOrBlank()
-        val params = optionsBundle.getBundle(AppActionsWidgetExtension.EXTRA_APP_ACTIONS_PARAMS)
-        if (params != null) {
-            isFallbackIntent = params.isEmpty
-            aboutExerciseName = params.get("aboutExerciseName") as String
-        } else {
-            isFallbackIntent = false
-            aboutExerciseName = context.resources.getString(R.string.activity_unknown)
-        }
-        exerciseType = FitActivity.Type.find(aboutExerciseName)
-    }
+
+    // Add init
 
 
 
     fun updateAppWidget() {
-        /**
-         * Checks if widget should get requested or last exercise data and updates widget
-         * accordingly
-         */
-        if (hasBii && !isFallbackIntent) {
-            observeAndUpdateRequestedExercise()
-        } else observeAndUpdateLastExercise()
+        observeAndUpdateLastExercise()
     }
 
 
@@ -98,22 +77,7 @@ class StatsWidget(
         )
     }
 
-    /**
-     * Sets TTS to widget
-     */
-    private fun setTts(
-        speechText: String,
-        displayText: String,
-    ) {
-        val appActionsWidgetExtension: AppActionsWidgetExtension =
-            AppActionsWidgetExtension.newBuilder(appWidgetManager)
-                .setResponseSpeech(speechText)  // TTS to be played back to the user
-                .setResponseText(displayText)  // Response text to be displayed in Assistant
-                .build()
-
-        // Update widget with TTS
-        appActionsWidgetExtension.updateWidget(appWidgetId)
-    }
+    // Add setTts
 
     /**
      * Formats and sets activity data to Widget
@@ -135,23 +99,7 @@ class StatsWidget(
 
         setDataToWidget(activityExerciseType, distanceInKm, durationInMin)
 
-        if (hasBii) {
-            // formats speech and display text for Assistant
-            // https://developers.google.com/assistant/app/widgets#tts
-            val speechText = context.getString(
-                R.string.widget_activity_speech,
-                activityExerciseTypeFormatted,
-                formattedDate,
-                durationInMin,
-                distanceInKm
-            )
-            val displayText = context.getString(
-                R.string.widget_activity_text,
-                activityExerciseTypeFormatted,
-                formattedDate
-            )
-            setTts(speechText, displayText)
-        }
+        // Add conditional for hasBii for widget with data
     }
 
     /**
@@ -164,16 +112,7 @@ class StatsWidget(
 
         setDataToWidget(appwidgetTypeTitleText, distanceInKm, durationInMin)
 
-        if (hasBii) {
-            // formats speech and display text for Assistant
-            // https://developers.google.com/assistant/app/widgets#library
-            val speechText =
-                context.getString(R.string.widget_no_activity_speech, aboutExerciseName)
-            val displayText =
-                context.getString(R.string.widget_no_activity_text)
-
-            setTts(speechText, displayText)
-        }
+        // Add conditional for hasBii for widget without data
     }
 
     /**
@@ -183,22 +122,7 @@ class StatsWidget(
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    /**
-     * Create and observe the last exerciseType activity LiveData.
-     */
-    private fun observeAndUpdateRequestedExercise() {
-        val activityData = repository.getLastActivities(1, exerciseType)
-
-        activityData.observeOnce { activitiesStat ->
-            if (activitiesStat.isNotEmpty()) {
-                formatDataAndSetWidget(activitiesStat[0])
-                updateWidget()
-            } else {
-                setNoActivityDataWidget()
-                updateWidget()
-            }
-        }
-    }
+    // Add observeAndUpdateRequestedExercise function
 
 
     /**
