@@ -10,7 +10,7 @@ Specifically, this sample supports the following BIIs:
 * `actions.intent.START_EXERCISE`: Open the sample app and start an exercise session.
 * `actions.intent.STOP_EXERCISE`: Open the sample app and stops the current exercise session.
 * `actions.intent.GET_EXERCISE_OBSERVATION`: Display a
-  [Slice](https://developer.android.com/guide/slices) inside the Assistant with information on a
+  [widget](https://developers.google.com/assistant/app/widgets) inside the Assistant with information on a
   particular exercise statistic.
 
 ![alt-text](media/fit-actions-demo.gif "App Actions Demo")
@@ -30,6 +30,7 @@ Clone or download the project to your preferred location. Then, import and modif
         }
     }
     ```
+
 3. Change the three (3) `android:targetPackage` in [app/src/main/res/xml/shortcuts.xml](app/src/main/res/xml/shortcuts.xml) to the `applicationId` in your [app/build.gradle](app/build.gradle).
 
     ```xml
@@ -49,7 +50,7 @@ Clone or download the project to your preferred location. Then, import and modif
         </intent>
     </capability>
     ```
-
+   
     ```xml
     <capability android:name="actions.intent.GET_EXERCISE_OBSERVATION">
         <intent
@@ -94,9 +95,8 @@ through our public issue tracker.
 * [App Actions Overview](https://developers.google.com/assistant/app/overview)
 * [Built-in Intents reference](https://developers.google.com/assistant/app/reference/built-in-intents/bii-index)
 * [App Actions Test Tool](https://developers.google.com/assistant/app/test-tool)
-* [Codelabs](https://developers.google.com/assistant/app/codelabs)
+* [Codelab](https://developers.google.com/assistant/app/codelabs)
 * [Other samples](https://developers.google.com/assistant/app/samples)
-
 
 ## License
 ```

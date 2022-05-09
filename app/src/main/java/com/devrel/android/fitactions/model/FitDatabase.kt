@@ -68,12 +68,18 @@ abstract class FitDatabase : RoomDatabase() {
             Executors.newSingleThreadExecutor().submit {
                 val fitActivityDao = getInstance(context).fitActivityDao()
                 val currentTime = System.currentTimeMillis()
+                val possibleTypes = arrayOf(
+                    FitActivity.Type.RUNNING,
+                    FitActivity.Type.WALKING,
+                    FitActivity.Type.CYCLING,
+                )
                 repeat(10) {
+                    val randomIndex = Random.nextInt(possibleTypes.size)
                     fitActivityDao.insert(
                         FitActivity(
                             id = UUID.randomUUID().toString(),
                             date = currentTime.minus(TimeUnit.DAYS.toMillis(it.toLong())),
-                            type = FitActivity.Type.RUNNING,
+                            type = possibleTypes[randomIndex],
                             distanceMeters = Random.nextDouble(1.0, 30.0) * 1000,
                             durationMs = TimeUnit.MINUTES.toMillis(Random.nextLong(10, 90))
                         )

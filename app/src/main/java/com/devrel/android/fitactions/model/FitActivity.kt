@@ -42,9 +42,6 @@ data class FitActivity(
 
     /**
      * Defines the type of activity
-     *
-     * @see https://developers.google.com/actions/reference/built-in-intents/ for different
-     * supported exercise names by App Actions
      */
     enum class Type(val nameId: Int) {
         UNKNOWN(R.string.activity_unknown),
