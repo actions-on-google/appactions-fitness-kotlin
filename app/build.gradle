@@ -25,7 +25,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.MYUNIQUENAME.android.fitactions"
+        applicationId "PUT_YOUR_APPLICATION_ID_HERE"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

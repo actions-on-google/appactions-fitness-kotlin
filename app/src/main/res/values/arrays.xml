@@ -17,4 +17,26 @@
 
 <resources>
 
+    <array name="runningSynonyms">
+        <item>Running</item>
+        <item>Run</item>
+        <item>Jog</item>
+        <item>Jogging</item>
+        <item>Sprint</item>
+    </array>
+
+    <array name="walkingSynonyms">
+        <item>Walk</item>
+        <item>Hike</item>
+        <item>Hiking</item>
+    </array>
+
+    <array name="cyclingSynonyms">
+        <item>Biking</item>
+        <item>Riding</item>
+        <item>Pedaling</item>
+        <item>Cycling</item>
+        <item>Cycle</item>
+    </array>
+
 </resources>

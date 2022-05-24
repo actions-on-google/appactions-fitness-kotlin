@@ -18,19 +18,11 @@
 package com.devrel.android.fitactions
 
 /**
- * Static object that defines the different deep-links
+ * Static object that defines the different BIIs
  */
-object DeepLink {
-    const val STATS = "/stats"
-    const val START = "/start"
-    const val STOP = "/stop"
-
-    /**
-     * Parameter types for the deep-links
-     */
-    object Params {
-        const val ACTIVITY_TYPE = "exerciseType"
-    }
+object BiiIntents {
+    const val START_EXERCISE = "exerciseType"
+    const val STOP_EXERCISE = "stopExercise"
 
     object Actions {
         const val ACTION_TOKEN_EXTRA = "actions.fulfillment.extra.ACTION_TOKEN"

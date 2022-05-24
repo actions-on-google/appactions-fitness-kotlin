@@ -52,7 +52,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <!-- Define your supported deeplinks -->
             <intent-filter
                     android:autoVerify="true"
                     tools:targetApi="m">
@@ -66,16 +65,17 @@
                         android:host="fit-actions.firebaseapp.com"
                         android:scheme="https" />
             </intent-filter>
+
+            <!-- Required reference to App Actions shortcuts.xml file. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <service
             android:name="com.devrel.android.fitactions.tracking.FitTrackingService"
             android:enabled="true"
             android:exported="true" />
-        <!-- Indicate where to find the actions.xml -->
-        <meta-data
-                android:name="com.google.android.actions"
-                android:resource="@xml/actions" />
     </application>
 
 </manifest>
