@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  *
  */
 
-package com.devrel.android.fitactions
-
+import android.app.assist.AssistContent
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -27,20 +27,23 @@ import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
 import com.devrel.android.fitactions.tracking.FitTrackingService
+import com.google.firebase.appindexing.Action
+import com.google.firebase.appindexing.FirebaseUserActions
+import com.google.firebase.appindexing.builders.AssistActionBuilder
+import org.json.JSONObject
 
 /**
  * Main activity responsible for the app navigation and handling deep-links.
  */
-class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
+class FitMainActivity :
+    AppCompatActivity(), FitStatsFragment.FitStatsActions, FitTrackingFragment.FitTrackingActions {
 
-    /**
-     * Handle the intent this activity was launched with.
-     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fit_activity)
 
-        this.intent?.handleIntent()
+        // Handle the intent this activity was launched with.
+        intent?.handleIntent()
     }
 
     /**
@@ -51,17 +54,7 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
         intent?.handleIntent()
-    }
-
-    /**
-     * Handles the action from the intent base on the type.
-     *
-     * @receiver the intent to handle
-     */
-    private fun Intent.handleIntent() {
-        showDefaultView()
     }
 
     /**
@@ -75,12 +68,39 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     }
 
     /**
-     * Callback method from the FitStatsFragment to indicate that the tracking activity flow should be shown.
+     * When the user invokes an App Action while in your app, users will see a suggestion
+     * to share their foreground content.
+     *
+     * By implementing onProvideAssistContent(), you provide the Assistant with structured
+     * information about the current foreground content.
+     *
+     * This contextual information enables the Assistant to continue being helpful after the user
+     * enters your app.
+     */
+    override fun onProvideAssistContent(outContent: AssistContent) {
+        super.onProvideAssistContent(outContent)
+
+        // JSON-LD object based on Schema.org structured data
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // This is just an example, more accurate information should be provided
+            outContent.structuredData = JSONObject()
+                .put("@type", "ExerciseObservation")
+                .put("name", "My last runs")
+                .put("url", "https://fit-actions.firebaseapp.com/stats")
+                .toString()
+        }
+    }
+
+    /**
+     * Callback method from the FitStatsFragment to indicate that the tracking activity flow
+     * should be shown.
      */
     override fun onStartActivity() {
         updateView(
             newFragmentClass = FitTrackingFragment::class.java,
-            arguments = Bundle().apply { putSerializable(FitTrackingFragment.PARAM_TYPE, FitActivity.Type.RUNNING) },
+            arguments = Bundle().apply {
+                putSerializable(FitTrackingFragment.PARAM_TYPE, FitActivity.Type.RUNNING)
+            },
             toBackStack = true
         )
     }
@@ -98,10 +118,51 @@ class FitMainActivity : AppCompatActivity(), FitStatsFragment.FitStatsActions, F
     }
 
     /**
+     * Handles the action from the intent base on the type.
+     *
+     * @receiver the intent to handle
+     */
+    private fun Intent.handleIntent() {
+        showDefaultView()
+    }
+
+    // Add handleIntent function
+
+
+    /**
+     * Log a success or failure of the received action based on if your app could handle the action
+     *
+     * Required to help giving Assistant visibility over success or failure of an action sent to the app.
+     * Otherwise, it can’t confidently send user’s to your app for fulfillment.
+     */
+    private fun notifyActionSuccess(succeed: Boolean) {
+        @Suppress("ConstantConditionIf")
+        if (!BuildConfig.FIREBASE_ENABLED) {
+            return
+        }
+
+        intent.getStringExtra(DeepLink.Actions.ACTION_TOKEN_EXTRA)?.let { actionToken ->
+            val actionStatus = if (succeed) {
+                Action.Builder.STATUS_TYPE_COMPLETED
+            } else {
+                Action.Builder.STATUS_TYPE_FAILED
+            }
+            val action = AssistActionBuilder()
+                .setActionToken(actionToken)
+                .setActionStatus(actionStatus)
+                .build()
+
+            // Send the end action to the Firebase app indexing.
+            FirebaseUserActions.getInstance(getApplicationContext()).end(action)
+        }
+    }
+
+    /**
      * Show ongoing activity or stats if none
      */
     private fun showDefaultView() {
-        val fragmentClass = if (FitRepository.getInstance(this).getOnGoingActivity().value != null) {
+        val onGoing = FitRepository.getInstance(this).getOnGoingActivity().value
+        val fragmentClass = if (onGoing != null) {
             FitTrackingFragment::class.java
         } else {
             FitStatsFragment::class.java

@@ -29,7 +29,7 @@ import kotlin.random.Random
 /**
  * Defines the Room DB configuration for the application.
  */
-@Database(entities = [FitActivity::class], version = 1)
+@Database(entities = [FitActivity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class FitDatabase : RoomDatabase() {
 
