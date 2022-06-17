@@ -15,6 +15,8 @@
  *
  */
 
+package com.devrel.android.fitactions
+
 import android.app.assist.AssistContent
 import android.content.Intent
 import android.net.Uri
