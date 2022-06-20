@@ -54,7 +54,9 @@ class FitTrackingService : Service() {
      */
     private val notificationBuilder: NotificationCompat.Builder by lazy {
         val pendingIntent = Intent(this, FitMainActivity::class.java).let { notificationIntent ->
-            PendingIntent.getActivity(this, 0, notificationIntent, 0)
+            val flags =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0
+            PendingIntent.getActivity(this, 0, notificationIntent, flags)
         }
         NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getText(R.string.tracking_notification_title))
