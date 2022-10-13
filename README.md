@@ -1,9 +1,11 @@
-# App Actions fitness sample
+# *:warning: Warning: Go to [App Actions fitness sample](https://github.com/android/app-actions/fitness-bii') or [App Actions Widget sample](https://github.com/android/app-actions/widget) for maintained sample.
+
+*:warning: Warning: This [App Actions fitness sample](https://github.com/android/app-actions/fitness-bii') and [App Actions Widget sample](https://github.com/android/app-actions/widget) has migrated to [App-Action directory](https://github.com/android/app-actions) in Android Github. This version will no longer be maintained.*
 
 This is a sample Fitness application that allows displaying workout information as well as starting
-and stopping a workout. By implementing [App Actions](https://developers.google.com/assistant/app/),
+and stopping a workout. By implementing [App Actions](ttps://developer.android.com/guide/app-actions/overview),
 we allow the user to call upon our application to fulfill supported
-[built-in intents (BIIs)](https://developers.google.com/assistant/app/reference/built-in-intents) in the
+[built-in intents (BIIs)](https://developer.android.com/reference/app-actions/built-in-intents) in the
 fitness category.
 
 Specifically, this sample supports the following BIIs:
