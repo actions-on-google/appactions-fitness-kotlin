@@ -1,6 +1,6 @@
-# *:warning: Warning: Go to [App Actions fitness sample](https://github.com/android/app-actions/fitness-bii') or [App Actions Widget sample](https://github.com/android/app-actions/widget) for maintained sample.
+# *:warning: Warning: Go to [App Actions fitness sample](https://github.com/android/app-actions-samples/tree/main/fitness-biis) or [App Actions Widget sample](https://github.com/android/app-actions-samples/tree/main/widget) for maintained sample.
 
-*:warning: Warning: This [App Actions fitness sample](https://github.com/android/app-actions/fitness-bii') and [App Actions Widget sample](https://github.com/android/app-actions/widget) has migrated to [App-Action directory](https://github.com/android/app-actions) in Android Github. This version will no longer be maintained.*
+*:warning: Warning: This [App Actions fitness sample](https://github.com/android/app-actions-samples/tree/main/fitness-biis) and [App Actions Widget sample](https://github.com/android/app-actions-samples/tree/main/widget) has migrated to [App-Action directory](https://github.com/android/app-actions-samples) in Android Github. This version will no longer be maintained.*
 
 This is a sample Fitness application that allows displaying workout information as well as starting
 and stopping a workout. By implementing [App Actions](ttps://developer.android.com/guide/app-actions/overview),
