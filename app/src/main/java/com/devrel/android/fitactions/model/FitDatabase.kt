@@ -52,7 +52,7 @@ abstract class FitDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): FitDatabase {
             return Room.databaseBuilder(context, FitDatabase::class.java, "FitActionsDB")
-                .addCallback(object : RoomDatabase.Callback() {
+                .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         prepopulate(context)

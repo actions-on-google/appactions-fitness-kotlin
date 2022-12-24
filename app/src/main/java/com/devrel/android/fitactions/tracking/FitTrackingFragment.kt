@@ -25,11 +25,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.devrel.android.fitactions.R
+import com.devrel.android.fitactions.databinding.FitTrackingFragmentBinding
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
-import kotlinx.android.synthetic.main.fit_tracking_fragment.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -50,6 +49,10 @@ class FitTrackingFragment : Fragment() {
     }
 
     lateinit var actionsCallback: FitTrackingActions
+
+    private  var _binding: FitTrackingFragmentBinding? = null
+
+    private val binding get() = _binding!!
 
     private val fitRepository: FitRepository by lazy {
         FitRepository.getInstance(requireContext())
@@ -73,21 +76,22 @@ class FitTrackingFragment : Fragment() {
             countDownMs = millisUntilFinished
 
             val secondsLeft = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished).toString()
-            startActivityCountDown.text = secondsLeft
+            binding.startActivityCountDown.text = secondsLeft
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fit_tracking_fragment, container, false)
+    ): View {
+        _binding = FitTrackingFragmentBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        startActivityButton.setOnClickListener {
+        binding.startActivityButton.setOnClickListener {
             // Handle the two states of the activity button
             // If activity started, stop it and notify activity.
             // Otherwise start the tracking service.
@@ -101,7 +105,7 @@ class FitTrackingFragment : Fragment() {
         }
 
         // Observe the ongoing activity and update the view accordingly.
-        fitRepository.getOnGoingActivity().observe(this, Observer {
+        fitRepository.getOnGoingActivity().observe(viewLifecycleOwner) {
             if (it == null) {
                 // When no ongoing activity only start the countdown if we haven't already.
                 if (countDownMs > 0) {
@@ -111,12 +115,13 @@ class FitTrackingFragment : Fragment() {
             } else {
                 onTracking(it)
             }
-        })
+        }
     }
 
     override fun onDestroyView() {
         countDownTimer.cancel()
         super.onDestroyView()
+        _binding = null
     }
 
     /**
@@ -139,21 +144,21 @@ class FitTrackingFragment : Fragment() {
     private fun onCountDown() {
         val type = arguments?.getSerializable(PARAM_TYPE) as? FitActivity.Type
             ?: FitActivity.Type.UNKNOWN
-        startActivityTitle.text = getString(R.string.start_activity_title, type.name.toLowerCase())
-        startActivityCountDown.text = TimeUnit.MILLISECONDS.toSeconds(countDownMs).toString()
-        startActivityButton.isSelected = false
+        binding.startActivityTitle.text = getString(R.string.start_activity_title, type.name.lowercase())
+        binding.startActivityCountDown.text = TimeUnit.MILLISECONDS.toSeconds(countDownMs).toString()
+        binding.startActivityButton.isSelected = false
     }
 
     /**
      * Update the tracking view
      */
     private fun onTracking(activity: FitActivity) {
-        startActivityTitle.setText(R.string.tracking_notification_title)
-        startActivityCountDown.text = getString(
+        binding.startActivityTitle.setText(R.string.tracking_notification_title)
+        binding.startActivityCountDown.text = getString(
             R.string.stats_tracking_distance,
             activity.distanceMeters.toInt()
         )
-        startActivityButton.isSelected = true
+        binding.startActivityButton.isSelected = true
     }
 
     interface FitTrackingActions {

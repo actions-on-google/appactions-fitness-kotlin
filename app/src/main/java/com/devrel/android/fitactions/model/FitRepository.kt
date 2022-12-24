@@ -19,6 +19,7 @@ package com.devrel.android.fitactions.model
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -130,7 +131,7 @@ class FitRepository(private val fitDb: FitDatabase, private val ioExecutor: Exec
     private class Tracker : MutableLiveData<FitActivity>() {
 
         private var isRunning = true
-        private val handler = Handler()
+        private val handler = Handler(Looper.getMainLooper())
         private val runnable = object : Runnable {
 
             /**

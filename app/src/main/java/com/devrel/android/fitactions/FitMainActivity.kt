@@ -14,10 +14,10 @@
  * limitations under the License.
  *
  */
+package com.devrel.android.fitactions
 
 import android.app.assist.AssistContent
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +26,6 @@ import com.devrel.android.fitactions.home.FitStatsFragment
 import com.devrel.android.fitactions.model.FitActivity
 import com.devrel.android.fitactions.model.FitRepository
 import com.devrel.android.fitactions.tracking.FitTrackingFragment
-import com.devrel.android.fitactions.tracking.FitTrackingService
 import com.google.firebase.appindexing.Action
 import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.builders.AssistActionBuilder
@@ -43,7 +42,7 @@ class FitMainActivity :
         setContentView(R.layout.fit_activity)
 
         // Handle the intent this activity was launched with.
-        intent?.handleIntent()
+        handleIntent()
     }
 
     /**
@@ -54,7 +53,7 @@ class FitMainActivity :
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.handleIntent()
+        handleIntent()
     }
 
     /**
@@ -122,7 +121,7 @@ class FitMainActivity :
      *
      * @receiver the intent to handle
      */
-    private fun Intent.handleIntent() {
+    private fun handleIntent() {
         showDefaultView()
     }
 
