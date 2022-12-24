@@ -22,6 +22,8 @@
     <!-- Needed permission to start the FitTrackingService in foreground mode -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name="com.devrel.android.fitactions.FitApp"
         android:allowBackup="true"

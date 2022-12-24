@@ -24,8 +24,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.devrel.android.fitactions.R
+import com.devrel.android.fitactions.databinding.FitStatsFragmentBinding
 import com.devrel.android.fitactions.model.FitRepository
-import kotlinx.android.synthetic.main.fit_stats_fragment.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -37,41 +37,52 @@ class FitStatsFragment : Fragment() {
 
     lateinit var actionsCallback: FitStatsActions
 
+    private var _binding: FitStatsFragmentBinding? =null
+
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fit_stats_fragment, container, false)
+    ): View {
+        _binding = FitStatsFragmentBinding.inflate(inflater, container, false)
+        return  binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = FitStatsAdapter()
-        statsList.adapter = adapter
+        binding.statsList.adapter = adapter
 
         val repository = FitRepository.getInstance(requireContext())
-        repository.getStats().observe(viewLifecycleOwner, Observer { fitStats ->
-            statsActivityCount.text = getString(
+        repository.getStats().observe(viewLifecycleOwner) { fitStats ->
+            binding.statsActivityCount.text = getString(
                 R.string.stats_total_count,
                 fitStats.totalCount
             )
-            statsDistanceCount.text = getString(
+            binding.statsDistanceCount.text = getString(
                 R.string.stats_total_distance,
                 fitStats.totalDistanceMeters.toInt()
             )
             val durationInMin = TimeUnit.MILLISECONDS.toMinutes(fitStats.totalDurationMs)
-            statsDurationCount.text = getString(R.string.stats_total_duration, durationInMin)
-        })
+            binding.statsDurationCount.text =
+                getString(R.string.stats_total_duration, durationInMin)
+        }
 
-        repository.getLastActivities(10).observe(viewLifecycleOwner, Observer {
+        repository.getLastActivities(10).observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            statsList.smoothScrollToPosition(0)
-        })
+            binding.statsList.smoothScrollToPosition(0)
+        }
 
-        statsStartButton.setOnClickListener {
+        binding.statsStartButton.setOnClickListener {
             actionsCallback.onStartActivity()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     interface FitStatsActions {

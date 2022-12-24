@@ -18,14 +18,13 @@
 package com.devrel.android.fitactions.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.devrel.android.fitactions.R
+import com.devrel.android.fitactions.databinding.FitStatsRowBinding
 import com.devrel.android.fitactions.model.FitActivity
-import kotlinx.android.synthetic.main.fit_stats_row.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -42,7 +41,7 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.fit_stats_row, parent, false))
+        return ViewHolder(FitStatsRowBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -62,7 +61,7 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
         }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(private val binding: FitStatsRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(activity: FitActivity, max: Int) {
             val context = itemView.context
@@ -73,7 +72,7 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
                 Locale.getDefault()
             )
             val monthFormatter = SimpleDateFormat("MM")
-            itemView.statsRowTitle.text = context.getString(
+            binding.statsRowTitle.text = context.getString(
                 R.string.stat_date,
                 day,
                 calendar.get(Calendar.DAY_OF_MONTH),
@@ -84,14 +83,14 @@ class FitStatsAdapter : ListAdapter<FitActivity, FitStatsAdapter.ViewHolder>(DIF
             val km = String.format("%.2f", activity.distanceMeters / 1000)
             val duration = context.getString(R.string.stat_duration, minutes)
             val distance = context.getString(R.string.stat_distance, km)
-            itemView.statsRowContent.apply {
+            binding.statsRowContent.apply {
                 text = duration
                 append("\n")
                 append(distance)
             }
 
-            itemView.statsRowProgress.max = max
-            itemView.statsRowProgress.progress = activity.distanceMeters.toInt()
+            binding.statsRowProgress.max = max
+            binding.statsRowProgress.progress = activity.distanceMeters.toInt()
         }
     }
 }
